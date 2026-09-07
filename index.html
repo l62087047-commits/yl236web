@@ -1,0 +1,5917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet" />
+
+<style>
+/* ─────────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────────── */
+:root {
+  --bg:        #050505;
+  --bg-lift:   #0b0b0b;
+  --ink:       #f4f4f0;
+  --ink-mid:   #b1b1ac;
+  --ink-soft:  #777773;
+  --ink-faint: #555551;
+  --vellum-1:  rgba(24,24,24,0.72);
+  --rule:      rgba(255,255,255,0.13);
+  --shadow-md: 0 6px 32px rgba(0,0,0,0.08);
+  --shadow-lg: 0 16px 64px rgba(0,0,0,0.10);
+  --f:         'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --expo:      cubic-bezier(0.16,1,0.3,1);
+  --hero-bg:   #050505;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto;font-size:16px}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:auto}
+a{text-decoration:none;color:inherit}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+body::before{
+  content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+
+
+#loader{position:fixed;inset:0;background:var(--ink);z-index:8000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;}
+.ld-num{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.25);font-variant-numeric:tabular-nums}
+.ld-track{width:120px;height:1px;background:rgba(255,255,255,.9);overflow:hidden}
+.ld-fill{height:100%;background:rgba(255,255,255,.45);width:0%;transform-origin:left}
+.ld-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.18)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,5,.76);backdrop-filter:blur(12px) saturate(1.1);-webkit-backdrop-filter:blur(12px) saturate(1.1);border-bottom:1px solid var(--rule);}
+.nav-logo{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.nav-items{display:flex;align-items:center;gap:6px;list-style:none}
+.nav-items li{display:flex;align-items:center;gap:4px}
+.nav-num{font-size:8px;font-weight:500;color:var(--ink-faint);letter-spacing:.08em;line-height:1}
+.nav-items a{font-size:13px;font-weight:400;letter-spacing:.04em;color:var(--ink-mid);padding:6px 10px;transition:color .2s;position:relative;}
+.nav-items a::after{content:'';position:absolute;bottom:2px;left:10px;right:10px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--expo);}
+.nav-items a:hover{color:var(--ink)}
+.nav-items a:hover::after{transform:scaleX(1)}
+.nav-contact{display:flex;align-items:center;gap:10px}
+.nav-contact-label{font-size:14px;font-weight:400;letter-spacing:.06em;color:var(--ink-mid)}
+.nav-contact-btn{width:28px;height:28px;border:1px solid var(--rule);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:13px;transition:background .2s,border-color .2s;background:transparent;}
+.nav-contact-btn:hover{background:var(--ink);color:var(--bg)}
+
+#intro{min-height:100vh;padding:52px 32px 64px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;background:var(--bg);}
+.intro-top-label{position:absolute;top:72px;left:32px;font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);}
+.intro-giant{position:relative;z-index:2;font-size:clamp(72px,7vw,140px);line-height:.92;letter-spacing:-.055em;font-weight:800;color:var(--ink);max-width:1180px;}
+.intro-giant .ghost{position:absolute;z-index:-1;top:48%;left:58%;transform:translate(-50%,-50%);font-size:clamp(150px,15vw,280px);line-height:1;font-weight:800;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.07);letter-spacing:-.045em;white-space:nowrap;pointer-events:none;}
+.intro-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);position:relative;z-index:2;}
+.intro-col-label{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+.intro-col-val{font-size:12px;font-weight:400;letter-spacing:.04em;color:var(--ink-mid);line-height:1.6}
+.intro-vellum{position:absolute;top:18%;right:6%;width:260px;background:var(--vellum-1);backdrop-filter:blur(6px) saturate(0.9);-webkit-backdrop-filter:blur(6px) saturate(0.9);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow-md),inset 0 1px 0 rgba(255,255,255,.08);padding:24px;transform:rotate(1.2deg);}
+.vellum-title{font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px}
+.vellum-body{font-size:13px;font-weight:400;letter-spacing:.03em;line-height:1.75;color:var(--ink-mid)}
+.eyebrow{font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-faint);display:flex;align-items:center;gap:10px;}
+.eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:var(--ink-faint)}
+
+
+.proj-overview{
+  padding:clamp(90px,10vw,150px) 40px;
+  background:var(--bg);
+  position:relative;
+  border-top:1px solid var(--rule);
+}
+.proj-overview:nth-of-type(even){background:var(--bg-lift)}
+.ov-head{
+  margin-bottom:52px;
+}
+.ov-kicker{
+  display:flex;
+  justify-content:space-between;
+  gap:24px;
+  padding-top:12px;
+  border-top:1px solid var(--rule);
+  font-size:9px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin-bottom:24px;
+}
+.ov-title-marquee{
+  position:relative;
+  width:calc(100% + 80px);
+  margin-left:-40px;
+  margin-bottom:52px;
+  overflow:hidden;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+}
+.ov-title-track{
+  display:flex;
+  width:max-content;
+  will-change:transform;
+  animation:ovTitleMarquee 24s linear infinite;
+}
+.ov-title-marquee:hover .ov-title-track{
+  animation-play-state:paused;
+}
+.ov-project-title{
+  flex:none;
+  padding:18px 34px 22px;
+  font-size:clamp(58px,9vw,150px);
+  line-height:.78;
+  letter-spacing:-.075em;
+  font-weight:600;
+  color:var(--ink);
+  white-space:nowrap;
+}
+.ov-project-title::after{
+  content:'↗';
+  display:inline-block;
+  margin-left:.22em;
+  color:var(--ink-faint);
+  font-size:.4em;
+  vertical-align:.18em;
+}
+@keyframes ovTitleMarquee{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+.ov-layout{
+  display:grid;
+  grid-template-columns:minmax(240px,.72fr) minmax(0,1.5fr);
+  gap:clamp(38px,6vw,96px);
+  max-width:1680px;
+  margin:0 auto;
+  align-items:start;
+}
+.ov-col-num{
+  position:sticky;
+  top:78px;
+  align-self:start;
+  z-index:5;
+}
+.ov-big-num{
+  position:relative;
+  z-index:6;
+  width:fit-content;
+  margin-left:auto;
+  margin-right:clamp(-18px,-3.2vw,-56px);
+  font-size:clamp(54px,7vw,110px);
+  font-weight:600;
+  letter-spacing:-.06em;
+  line-height:.9;
+  color:#fff;
+  -webkit-text-stroke:0;
+  mix-blend-mode:difference;
+  margin-bottom:28px;
+  user-select:none;
+  pointer-events:none;
+  will-change:transform;
+}
+.ov-meta-block{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  border-top:1px solid var(--rule);
+}
+.ov-meta-row{
+  display:grid;
+  grid-template-columns:84px 1fr;
+  gap:16px;
+  border-bottom:1px solid var(--rule);
+  padding:12px 0;
+}
+.ov-meta-key{
+  font-size:10px;
+  font-weight:600;
+  color:var(--ink);
+}
+.ov-meta-val{
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:.02em;
+  color:var(--ink-soft);
+  line-height:1.55;
+}
+.ov-content{
+  display:flex;
+  flex-direction:column;
+  gap:64px;
+  min-width:0;
+}
+.ov-main-video{
+  position:relative;
+  z-index:1;
+  width:100%;
+  aspect-ratio:19/9;
+  overflow:hidden;
+  background:#111;
+  border-radius:10px;
+  cursor:pointer;
+}
+.ov-main-video video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* PROJECT 06 — MOBILE VIDEO */
+#p06-ov .ov-main-video{
+  width:360px;
+  max-width:100%;
+  aspect-ratio:400 / 844;
+  margin:0 auto;
+
+  border-radius:24px;
+}
+#p06-ov .ov-main-video video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.ov-main-video::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(to top,rgba(0,0,0,.28),transparent 48%);
+  opacity:.48;
+  transition:opacity .3s var(--expo);
+}
+.ov-main-video:hover::after,
+.ov-main-video.is-playing::after{opacity:.12}
+.ov-video-view{
+  position:absolute;
+  top:50%;
+  left:50%;
+  z-index:3;
+  transform:translate(-50%,-50%) scale(.9);
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.9);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s var(--expo),transform .35s var(--expo);
+}
+.ov-video-view-text{
+  color:#fff;
+  mix-blend-mode:difference;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  line-height:1;
+}
+.ov-main-video:hover .ov-video-view{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+.ov-main-video.is-playing .ov-video-view{
+  opacity:0;
+  transform:translate(-50%,-50%) scale(.84);
+}
+.ov-video-status{
+  position:absolute;
+  left:14px;
+  bottom:12px;
+  z-index:3;
+  color:rgba(255,255,255,.74);
+  font-size:9px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.ov-video-help{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  margin-top:10px;
+  color:var(--ink-faint);
+  font-size:9px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.ov-col-desc{
+  display:grid;
+  grid-template-columns:minmax(190px,.7fr) minmax(0,1.3fr);
+  gap:42px;
+  border-top:1px solid var(--rule);
+  padding-top:24px;
+}
+.ov-section-label{margin-bottom:0}
+.ov-desc-heading{
+  font-size:clamp(22px,2.35vw,35px);
+  font-weight:500;
+  letter-spacing:-.025em;
+  line-height:1.25;
+  color:var(--ink);
+  margin-bottom:0;
+}
+.ov-desc-body{
+  font-size:16px;
+  font-weight:400;
+  letter-spacing:.02em;
+  line-height:1.75;
+  color:var(--ink-mid);
+  max-width:680px;
+}
+.ov-desc-body+.ov-desc-body{margin-top:14px}
+.ov-detail-list{
+  display:flex;
+  flex-direction:column;
+  gap:62px;
+}
+.ov-detail-card{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(250px,.8fr);
+  gap:36px;
+  align-items:start;
+}
+.ov-detail-img{
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  background:#111;
+  position:relative;
+  z-index:1;
+}
+.ov-detail-img img,.ov-detail-img video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* PROJECT-SPECIFIC DETAIL IMAGE RATIOS */
+#p02-ov .ov-detail-card:nth-child(1) .ov-detail-img{aspect-ratio:1920 / 3453;}
+#p02-ov .ov-detail-card:nth-child(2) .ov-detail-img{aspect-ratio:1920 / 3002;}
+#p03-ov .ov-detail-card:nth-child(1) .ov-detail-img{aspect-ratio:1920 / 3303;}
+#p03-ov .ov-detail-card:nth-child(2) .ov-detail-img{aspect-ratio:390 / 844;}
+
+
+
+/* 3-1 */
+#p03-ov .ov-detail-card:nth-child(1) .ov-detail-img{
+    aspect-ratio:1920 / 1400;
+}
+
+#p03-ov .ov-detail-card:nth-child(1) .ov-detail-img img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+#p03-ov .ov-detail-list{
+    width:calc(100vw - 80px);
+    margin-left:calc(
+        (100vw - 80px - 100%) / -2
+    );
+}
+
+#p03-ov .ov-detail-card{
+    width:100%;
+}
+
+#p03-ov .ov-detail-card .ov-detail-img{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+
+    border-radius:0 !important;
+    box-shadow:none !important;
+}
+#p04-ov .ov-detail-card{
+    width:100%;
+}
+
+#p04-ov .ov-detail-card .ov-detail-img{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+
+    margin-left:0 !important;
+    margin-right:0 !important;
+
+    border-radius:0 !important;
+    box-shadow:none !important;
+}
+
+
+
+
+#p04-ov .ov-detail-card{
+    width:100%;
+}
+
+#p04-ov .ov-detail-card .ov-detail-img{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+
+    margin-left:0 !important;
+    margin-right:0 !important;
+
+    border-radius:0 !important;
+    box-shadow:none !important;
+}
+
+/* 4-1 */
+#p04-ov .ov-detail-card:nth-child(1) .ov-detail-img{
+    aspect-ratio:1920 / 1400;
+}
+
+#p04-ov .ov-detail-card:nth-child(1) .ov-detail-img img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+#p04-ov .ov-detail-list{
+    width:calc(100vw - 80px);
+    margin-left:calc(
+        (100vw - 80px - 100%) / -2
+    );
+}
+
+#p04-ov .ov-detail-card{
+    width:100%;
+}
+
+#p04-ov .ov-detail-card .ov-detail-img{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+
+    border-radius:0 !important;
+    box-shadow:none !important;
+}
+
+/* =========================
+   PROJECT 06
+========================= */
+
+#p06-ov .ov-detail-list{
+  width:calc(100vw - 80px);
+  margin-left:calc(
+    (100vw - 80px - 100%) / -2
+  );
+}
+
+#p06-ov .ov-detail-card{
+  width:100%;
+}
+
+
+/* 6-1 — FULL SIZE */
+#p06-ov .ov-detail-card:nth-child(1) .ov-detail-img{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+
+  aspect-ratio:3270 / 1852;
+
+  margin:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+}
+
+#p06-ov .ov-detail-card:nth-child(1) .ov-detail-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+
+
+
+
+.ov-detail-body{padding-top:8px}
+.ov-detail-num{
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+.ov-detail-num::before{
+  content:'';
+  display:inline-block;
+  width:16px;
+  height:1px;
+  background:var(--ink-faint);
+}
+.ov-detail-title{
+  font-size:18px;
+  font-weight:500;
+  letter-spacing:-.01em;
+  line-height:1.35;
+  color:var(--ink);
+  margin-bottom:14px;
+}
+.ov-detail-desc{
+  font-size:14px;
+  font-weight:400;
+  letter-spacing:.02em;
+  line-height:1.75;
+  color:var(--ink-mid);
+}
+
+
+
+
+
+
+
+
+
+#work-index{padding:100px 40px;background:var(--bg);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.wi-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:48px}
+.wi-title{font-size:clamp(28px,4vw,52px);font-weight:600;letter-spacing:-.03em;line-height:1}
+.wi-count{font-size:10px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
+.wi-row{display:grid;grid-template-columns:48px 1fr 200px 80px 32px;align-items:center;gap:24px;padding:20px 0;border-bottom:1px solid var(--rule);position:relative;overflow:hidden;cursor:auto;transition:background .2s;}
+.wi-row::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.05);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--expo);}
+.wi-row:hover::before{transform:scaleX(1)}
+.wi-num{font-size:10px;font-weight:400;letter-spacing:.12em;color:var(--ink-faint)}
+.wi-name{font-size:clamp(16px,2vw,22px);font-weight:500;letter-spacing:-.01em;color:var(--ink);transition:transform .3s var(--expo)}
+.wi-row:hover .wi-name{transform:translateX(6px)}
+.wi-type{font-size:10px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.wi-year{font-size:10px;font-weight:400;letter-spacing:.06em;color:var(--ink-faint);text-align:right}
+.wi-arrow{font-size:16px;color:var(--ink-faint);text-align:right;transition:transform .3s var(--expo),color .2s}
+.wi-row:hover .wi-arrow{transform:translateX(4px);color:var(--ink)}
+
+#about{padding:120px 40px;background:#0b0b0b;color:var(--ink);position:relative;overflow:hidden}
+.about-noise{position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;pointer-events:none;}
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;position:relative;z-index:1}
+.about-eyebrow{font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:10px;margin-bottom:36px;}
+.about-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:rgba(255,255,255,.3)}
+.about-heading{font-size:clamp(28px,4vw,56px);font-weight:600;letter-spacing:-.03em;line-height:1.05;color:var(--ink);margin-bottom:32px}
+.about-body{font-size:13px;font-weight:400;letter-spacing:.03em;line-height:1.8;color:rgba(255,255,255,.55);max-width:400px}
+.about-body+.about-body{margin-top:16px}
+.services-list{display:flex;flex-direction:column;padding-top:8px}
+.svc{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-top:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:400;letter-spacing:.04em;color:rgba(255,255,255,.5);transition:color .2s;}
+.svc:last-child{border-bottom:1px solid rgba(255,255,255,.07)}
+.svc:hover{color:rgba(255,255,255,.85)}
+.svc-name{color:rgba(255,255,255,.8);font-weight:500}
+.svc-num{font-size:9px;letter-spacing:.1em}
+
+
+.banner-gallery{
+  position:relative;
+  overflow:hidden;
+  background:var(--bg);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  padding:72px 0 84px;
+}
+.banner-gallery-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:24px;
+  padding:0 40px;
+  margin-bottom:28px;
+}
+.banner-gallery-head h2{
+  font-size:clamp(28px,4vw,54px);
+  line-height:.95;
+  letter-spacing:-.045em;
+  font-weight:500;
+  color:var(--ink);
+}
+.banner-gallery-head span{
+  font-size:9px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.banner-viewport{
+  width:100%;
+  overflow:hidden;
+}
+.banner-track{
+  display:flex;
+  gap:18px;
+  width:max-content;
+  padding:0 40px;
+  will-change:transform;
+  animation:bannerLoop 34s linear infinite;
+}
+.banner-gallery:hover .banner-track{
+  animation-play-state:paused;
+}
+.banner-card{
+  position:relative;
+  flex:none;
+  width:min(74vw,1120px);
+  aspect-ratio:3.2/1;
+  overflow:hidden;
+  background:#111;
+  border:1px solid var(--rule);
+}
+.banner-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .8s var(--expo);
+}
+.banner-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to right,rgba(0,0,0,.48),rgba(0,0,0,.04) 62%);
+  pointer-events:none;
+}
+.banner-card:hover img{
+  transform:scale(1.025);
+}
+.banner-card-copy{
+  position:absolute;
+  z-index:2;
+  left:24px;
+  right:24px;
+  bottom:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:24px;
+  color:#fff;
+}
+.banner-card-copy strong{
+  display:block;
+  font-size:clamp(22px,3vw,48px);
+  line-height:.92;
+  letter-spacing:-.045em;
+  font-weight:600;
+}
+.banner-card-copy small{
+  display:block;
+  margin-top:8px;
+  font-size:9px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.64);
+}
+.banner-card-copy b{
+  font-size:26px;
+  font-weight:400;
+}
+.banner-pagination{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  padding:14px 40px 0;
+  color:var(--ink-faint);
+  font-size:9px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+@keyframes bannerLoop{
+  from{transform:translateX(0)}
+  to{transform:translateX(calc(-50% - 9px))}
+}
+@media(max-width:760px){
+  .banner-gallery{padding:56px 0 64px}
+  .banner-gallery-head,
+  .banner-pagination{padding-left:20px;padding-right:20px}
+  .banner-track{padding-left:20px;padding-right:20px;gap:12px}
+  .banner-card{width:84vw;aspect-ratio:2.4/1}
+  .banner-card-copy{left:16px;right:16px;bottom:15px}
+}
+
+
+footer{padding:60px 40px 40px;background:var(--bg);border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:32px;}
+.ft-logo{font-size:18px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.ft-sub{font-size:10px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px}
+.ft-links{display:flex;flex-direction:column;gap:10px}
+.ft-links a{font-size:10px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);transition:color .2s}
+.ft-links a:hover{color:var(--ink)}
+.ft-right{text-align:right}
+.ft-email{font-size:14px;font-weight:500;letter-spacing:-.01em;color:var(--ink);display:block;margin-bottom:12px;transition:opacity .2s}
+.ft-email:hover{opacity:.45}
+.ft-copy{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+
+.rev    {opacity:0;transform:translateY(22px);filter:blur(3px)}
+.rev-s  {opacity:0;transform:translateY(16px);filter:blur(2px)}
+.rev-num{opacity:0;transform:translateY(12px)}
+
+
+
+
+
+
+
+
+/* ═════════════════════════════════════════════
+   CRACK EFFECT
+   — additive only, zero impact on existing styles
+   — targets .crack-word spans in .intro-giant only
+   — "Brand-focused" & "Web Design" lines only
+   — .ghost is never affected
+
+   HOW IT WORKS:
+   Each .crack-word carries:
+   • ::before  → upper fragment (clipped above diagonal crack)
+   • ::after   → lower fragment (clipped below diagonal crack)
+   Both pseudo-elements are transparent overlays
+   that duplicate the text via data-text and shift
+   apart on hover, opening a hairline gap.
+   Multiple .crack-line child spans add thin
+   SVG-drawn fissure strokes that fade in on hover.
+═════════════════════════════════════════════ */
+
+/* ── Wrapper: inline, no layout impact ── */
+.crack-word {
+  position: relative;
+  display: inline-block; /* needed so pseudo-elements position correctly */
+}
+
+/* ── Shared pseudo setup ── */
+.crack-word::before,
+.crack-word::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  /* exactly match all typographic properties */
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  white-space: nowrap;
+  pointer-events: none;
+  /* invisible until hover */
+  opacity: 0;
+  will-change: transform, opacity, clip-path;
+  transition:
+    opacity    0.55s cubic-bezier(0.16,1,0.3,1),
+    transform  0.55s cubic-bezier(0.16,1,0.3,1),
+    clip-path  0.55s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* ── UPPER FRAGMENT ──
+   Diagonal cut: bottom edge runs from ~32% on the left
+   to ~44% on the right — matching the reference's
+   top-left to bottom-right crack angle (~5°).
+   Slightly different per line via .line-a / .line-b   */
+.crack-word.line-a::before {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 72% 36%, 48% 34%, 22% 38%, 0% 33%);
+}
+.crack-word.line-b::before {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 38%, 80% 42%, 55% 36%, 28% 40%, 0% 35%);
+}
+
+/* ── LOWER FRAGMENT ──
+   Mirror of upper — 2px gap built in between        */
+.crack-word.line-a::after {
+  clip-path: polygon(0% 36%, 22% 41%, 48% 37%, 72% 39%, 100% 43%, 100% 100%, 0% 100%);
+}
+.crack-word.line-b::after {
+  clip-path: polygon(0% 38%, 28% 43%, 55% 39%, 80% 45%, 100% 41%, 100% 100%, 0% 100%);
+}
+
+/* ── ACTIVATE on parent hover ── */
+.intro-giant:hover .crack-word::before,
+.intro-giant:hover .crack-word::after {
+  opacity: 1;
+}
+
+/* Upper shifts up-left */
+.intro-giant:hover .crack-word::before {
+  transform: translate(-1.8px, -1.4px);
+}
+
+/* Lower shifts down-right */
+.intro-giant:hover .crack-word::after {
+  transform: translate(1.8px, 1.4px);
+}
+
+/* ── FISSURE LINES ──
+   Thin inline SVG strokes rendered as background-image
+   on pseudo-elements of .crack-fissure child spans.
+   These are the "crack lines" running through the text.
+   Opacity is very low — barely visible.               */
+.crack-fissure {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Main diagonal fissure */
+.crack-fissure::before {
+  content: '';
+  position: absolute;
+  /* runs diagonally through the text */
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cpath d='M 22%25 33%25 L 35%25 35%25 L 38%25 30%25 L 50%25 36%25 L 60%25 32%25 L 65%25 37%25 L 78%25 38%25 L 85%25 34%25 L 100%25 40%25' stroke='%23111111' stroke-width='0.6' fill='none' stroke-linecap='round' stroke-linejoin='round' opacity='0.35'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Secondary micro-fissures — branching cracks */
+.crack-fissure::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cpath d='M 35%25 35%25 L 32%25 28%25 M 50%25 36%25 L 52%25 28%25 M 65%25 37%25 L 68%25 44%25 M 78%25 38%25 L 76%25 30%25 L 80%25 26%25' stroke='%23111111' stroke-width='0.5' fill='none' stroke-linecap='round' stroke-linejoin='round' opacity='0.22'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Activate fissures on parent hover */
+.intro-giant:hover .crack-fissure {
+  opacity: 1;
+}
+
+/* Ensure .ghost is never affected */
+.intro-giant .ghost {
+  pointer-events: none;
+  /* all .ghost styles from .intro-giant above are already set — untouched */
+}
+
+/* ═════════════════════════════════════════════
+   INTRO — SCROLL REVEAL / LIME TYPOGRAPHY
+═════════════════════════════════════════════ */
+:root{--acid:#7CFF00;--silver:#b7b7b2}
+#intro{
+  min-height:190vh;
+  padding:0;
+  display:block;
+  position:relative;
+  overflow:visible;
+  background:#000;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.intro-stage{
+  position:sticky;
+  top:0;
+  height:100vh;
+  min-height:680px;
+  overflow:hidden;
+  background:#000;
+  isolation:isolate;
+}
+.intro-stage::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:8;
+  pointer-events:none;
+  background:linear-gradient(to bottom,rgba(0,0,0,.08),transparent 28%,transparent 72%,rgba(0,0,0,.34));
+}
+.intro-portfolio{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:1;
+  transform:translate(-50%,-50%);
+  width:min(78vw,980px);
+  aspect-ratio:597 / 312;
+  opacity:1;
+  pointer-events:none;
+  will-change:transform,opacity,filter;
+}
+.intro-portfolio img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  opacity:.36;
+  filter:saturate(1.08) brightness(.95);
+}
+.intro-brand{
+  position:absolute;
+  inset:52px 24px 84px;
+  z-index:4;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  color:var(--acid);
+  font-size:clamp(72px,12.8vw,244px);
+  line-height:.74;
+  letter-spacing:-.078em;
+  font-weight:700;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+.intro-brand-line{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  opacity:0;
+  clip-path:inset(0 0 100% 0);
+  transform-origin:50% 100%;
+  will-change:transform,opacity,filter,clip-path;
+}
+.intro-brand-line--top{
+  align-self:flex-start;
+  transform:translate3d(-5vw,42px,0) scale(.97);
+  filter:blur(7px);
+}
+.intro-brand-line--bottom{
+  align-self:flex-end;
+  text-align:right;
+  transform:translate3d(5vw,54px,0) scale(.97);
+  filter:blur(7px);
+  margin-top:.14em;
+}
+.intro-micro{
+  position:absolute;
+  top:74px;
+  z-index:6;
+  font-size:9px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.38);
+  opacity:0;
+  transform:translateY(8px);
+  will-change:transform,opacity;
+}
+.intro-micro--left{left:32px}.intro-micro--right{right:32px}
+#intro .intro-bottom{
+  position:absolute;
+  left:32px;
+  right:32px;
+  bottom:28px;
+  z-index:6;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  margin:0;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.16);
+  opacity:0;
+  transform:translateY(22px);
+}
+#intro .intro-col-label{color:rgba(255,255,255,.34)}
+#intro .intro-col-val{color:rgba(255,255,255,.68)}
+
+/* Overview number: silver base + difference, not pure white */
+.ov-big-num{
+  color:var(--silver)!important;
+  opacity:.82;
+  mix-blend-mode:difference;
+  isolation:auto;
+  text-shadow:0 0 1px rgba(255,255,255,.12);
+}
+.ov-col-num{mix-blend-mode:normal}
+.proj-overview,.ov-layout,.ov-content,.ov-main-video,.ov-detail-img{isolation:auto}
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .intro-brand-line,.intro-micro,#intro .intro-bottom{opacity:1!important;transform:none!important;filter:none!important}
+  .intro-portfolio{opacity:.32!important}
+}
+
+
+/* ═════════════════════════════════════════════
+   REFINED PROJECT STRUCTURE — IMAGE-LED DETAILS
+   Keeps all original content, order and assets.
+═════════════════════════════════════════════ */
+.ov-content{
+  will-change:transform;
+}
+
+/* Overview copy gets a calmer, editorial composition. */
+.ov-col-desc{
+  grid-template-columns:minmax(130px,.42fr) minmax(0,1.58fr);
+  gap:clamp(28px,4vw,72px);
+  padding-top:28px;
+}
+.ov-desc-heading{
+  max-width:900px;
+  font-size:clamp(28px,3.25vw,54px);
+  line-height:1.08;
+}
+.ov-desc-body{
+  grid-column:2;
+  max-width:760px;
+}
+
+/* Detail section becomes image-first instead of repeated two-column cards. */
+.ov-detail-list{
+  gap:clamp(92px,11vw,180px);
+  padding-top:clamp(26px,4vw,64px);
+}
+.ov-detail-card{
+  display:block;
+  width:100%;
+}
+.ov-detail-img{
+  width:100%;
+  border-radius:clamp(8px,1vw,16px);
+  transform-origin:50% 50%;
+}
+.ov-detail-body{
+  display:grid;
+  grid-template-columns:70px minmax(180px,.72fr) minmax(240px,1.28fr);
+  gap:clamp(18px,3vw,52px);
+  align-items:start;
+  width:min(100%,1100px);
+  margin-top:18px;
+  padding:16px 0 0;
+  border-top:1px solid var(--rule);
+}
+.ov-detail-num,
+.ov-detail-title{
+  margin:0;
+}
+.ov-detail-desc{
+  max-width:620px;
+  color:var(--ink-soft);
+}
+
+/* Alternating widths create rhythm without changing the project order. */
+.ov-detail-card:nth-child(even) .ov-detail-img{
+  width:82%;
+  margin-left:auto;
+}
+.ov-detail-card:nth-child(even) .ov-detail-body{
+  margin-left:auto;
+}
+.ov-detail-card:nth-child(3n) .ov-detail-img{
+  width:90%;
+}
+
+/* Preserve the exact tall-image ratios while giving them breathing room. */
+#p02-ov .ov-detail-card:nth-child(1) .ov-detail-img,
+#p02-ov .ov-detail-card:nth-child(2) .ov-detail-img,
+#p03-ov .ov-detail-card:nth-child(1) .ov-detail-img{
+  width:min(74%,960px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Mobile-format works remain intentionally smaller. */
+#p03-ov .ov-detail-card:nth-child(2) .ov-detail-img,
+#p04-ov .ov-detail-card:nth-child(1) .ov-detail-img{
+  width:min(390px,34vw);
+  min-width:280px;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius:42px;
+  box-shadow:0 28px 90px rgba(0,0,0,.34);
+}
+#p03-ov .ov-detail-card:nth-child(2) .ov-detail-body,
+#p04-ov .ov-detail-card:nth-child(1) .ov-detail-body{
+  width:min(760px,100%);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Blend text only where it has enough scale to work visually. */
+.ov-big-num,
+.ov-section-label .eyebrow{
+  color:#fff;
+  mix-blend-mode:difference;
+}
+
+
+
+
+
+
+
+
+/* FIRST PAINT — subtle page fade-in */
+
+
+body{
+  transition:opacity .55s cubic-bezier(.22,1,.36,1);
+}
+
+body.page-enter-complete{
+  opacity:1;
+}
+
+@media(prefers-reduced-motion:reduce){
+  body{
+    transition:none!important;
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   COLOR SYSTEM — 00FFA1 / 111111 / LIGHT NEUTRALS
+   Cover: #111111
+   Accent: #00FFA1
+   Main surfaces: #F6F6F6 / #EBEBEB
+   Text: #111111 / #444444 / #B0B0B0 / #FFFFFF
+═════════════════════════════════════════════ */
+:root{
+  --accent:#00FFA1;
+  --cover:#111111;
+  --surface:#F6F6F6;
+  --surface-alt:#EBEBEB;
+  --text:#111111;
+  --text-mid:#444444;
+  --text-soft:#777777;
+  --text-faint:#B0B0B0;
+  --white:#FFFFFF;
+
+  /* remap the original design tokens */
+  --bg:var(--surface);
+  --bg-lift:var(--surface-alt);
+  --ink:var(--text);
+  --ink-mid:var(--text-mid);
+  --ink-soft:var(--text-soft);
+  --ink-faint:var(--text-faint);
+  --rule:rgba(17,17,17,.14);
+  --vellum-1:rgba(255,255,255,.72);
+  --shadow-md:0 8px 36px rgba(17,17,17,.08);
+  --shadow-lg:0 20px 70px rgba(17,17,17,.12);
+  --hero-bg:var(--cover);
+  --acid:var(--accent);
+  --silver:#EBEBEB;
+}
+
+html,
+body{
+  background:var(--surface);
+  color:var(--text);
+}
+
+body::before{
+  opacity:.018;
+  mix-blend-mode:multiply;
+}
+
+/* Navigation */
+nav{
+  background:rgba(246,246,246,.84);
+  border-bottom-color:rgba(17,17,17,.12);
+  color:var(--text);
+}
+.nav-logo,
+.nav-items a,
+.nav-contact-label{
+  color:var(--text-mid);
+}
+.nav-num{
+  color:var(--text-faint);
+}
+.nav-items a:hover,
+.nav-contact-btn{
+  color:var(--text);
+}
+.nav-items a::after{
+  background:var(--accent);
+}
+.nav-contact-btn{
+  border-color:rgba(17,17,17,.18);
+}
+.nav-contact-btn:hover{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--cover);
+}
+
+/* Cover / intro */
+#intro,
+.intro-stage{
+  background:var(--cover);
+  color:var(--white);
+}
+.intro-stage::after{
+  background:linear-gradient(
+    to bottom,
+    rgba(17,17,17,.08),
+    transparent 28%,
+    transparent 72%,
+    rgba(17,17,17,.5)
+  );
+}
+.intro-brand{
+  color:var(--accent);
+}
+.intro-portfolio img{
+  filter:saturate(1.04) brightness(.94);
+}
+.intro-micro{
+  color:rgba(255,255,255,.46);
+}
+#intro .intro-bottom{
+  border-top-color:rgba(255,255,255,.2);
+}
+#intro .intro-col-label{
+  color:rgba(255,255,255,.42);
+}
+#intro .intro-col-val{
+  color:rgba(255,255,255,.78);
+}
+
+/* Main project sections */
+.proj-overview{
+  background:var(--surface);
+  color:var(--text);
+  border-top-color:rgba(17,17,17,.12);
+}
+.proj-overview:nth-of-type(even){
+  background:var(--surface-alt);
+}
+.ov-kicker,
+.ov-title-marquee,
+.ov-col-desc,
+.ov-meta-block,
+.ov-meta-row,
+.ov-detail-body{
+  border-color:rgba(17,17,17,.14);
+}
+.ov-kicker,
+.ov-video-help,
+.ov-detail-num,
+.eyebrow,
+.wi-count,
+.wi-num,
+.wi-year,
+.banner-gallery-head span,
+.banner-pagination,
+.ft-sub,
+.ft-copy{
+  color:var(--text-faint);
+}
+.ov-project-title,
+.ov-desc-heading,
+.ov-detail-title,
+.ov-meta-key,
+.wi-title,
+.wi-name,
+.banner-gallery-head h2,
+.ft-logo,
+.ft-email{
+  color:var(--text);
+}
+.ov-project-title::after,
+.wi-arrow{
+  color:var(--text-faint);
+}
+.ov-desc-body,
+.ov-detail-desc,
+.ov-meta-val,
+.wi-type,
+.ft-links a{
+  color:var(--text-mid);
+}
+.eyebrow::before,
+.ov-detail-num::before{
+  background:var(--accent);
+}
+
+/* Large sticky project numbers:
+   white + difference keeps inversion visible over light and media surfaces */
+.ov-big-num{
+  color:var(--white)!important;
+  mix-blend-mode:difference;
+  opacity:.92;
+  text-shadow:none;
+}
+
+/* Video and media */
+.ov-main-video,
+.ov-detail-img,
+.banner-card{
+  background:var(--cover);
+}
+.ov-video-view{
+  background:rgba(255,255,255,.9);
+}
+.ov-video-view-text{
+  color:var(--white);
+  mix-blend-mode:difference;
+}
+.ov-video-status{
+  color:rgba(255,255,255,.78);
+}
+
+/* Work index */
+#work-index{
+  background:var(--surface);
+  color:var(--text);
+  border-color:rgba(17,17,17,.14);
+}
+.wi-row{
+  border-bottom-color:rgba(17,17,17,.14);
+}
+.wi-row::before{
+  background:rgba(0,255,161,.12);
+}
+.wi-row:hover .wi-arrow{
+  color:var(--accent);
+}
+
+/* About — dark anchor section */
+#about{
+  background:var(--cover);
+  color:var(--white);
+}
+.about-heading{
+  color:var(--white);
+}
+.about-eyebrow{
+  color:rgba(255,255,255,.5);
+}
+.about-eyebrow::before{
+  background:var(--accent);
+}
+.about-body{
+  color:rgba(255,255,255,.68);
+}
+.svc{
+  color:rgba(255,255,255,.58);
+  border-top-color:rgba(255,255,255,.13);
+}
+.svc:last-child{
+  border-bottom-color:rgba(255,255,255,.13);
+}
+.svc-name{
+  color:var(--white);
+}
+.svc-num{
+  color:var(--accent);
+}
+.svc:hover{
+  color:var(--white);
+}
+
+/* Banner gallery */
+.banner-gallery{
+  background:var(--surface-alt);
+  border-color:rgba(17,17,17,.14);
+}
+.banner-card{
+  border-color:rgba(17,17,17,.16);
+}
+.banner-card-copy{
+  color:var(--white);
+}
+
+/* Footer */
+footer{
+  background:var(--surface);
+  color:var(--text);
+  border-top-color:rgba(17,17,17,.14);
+}
+.ft-links a:hover{
+  color:var(--accent);
+}
+
+/* Accent-focused interactive details */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:4px;
+}
+::selection{
+  background:var(--accent);
+  color:var(--cover);
+}
+
+/* Keep the page fade clean on the new light surface */
+
+
+
+/* ═════════════════════════════════════════════
+   COLOR BALANCE REFINEMENT
+   More white surfaces + improved Overview contrast
+═════════════════════════════════════════════ */
+
+/* Give each project a deliberate surface rhythm */
+#p01-ov{background:#FFFFFF;}
+#p02-ov{background:#F6F6F6;}
+#p03-ov{background:#EBEBEB;}
+#p04-ov{background:#F4F6F8;}
+#p05-ov{background:#F6F6F6;}
+
+/* Remove the generic even-section rule from visually overriding the sequence */
+.proj-overview:nth-of-type(even){
+  background:inherit;
+}
+/* PROJECT 04 FINAL OVERRIDE */
+#p04-ov{
+  background:#F4F6F8 !important;
+}
+
+/* Overview label must stay readable on white and gray surfaces */
+.ov-section-label .eyebrow{
+  color:#444444!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+}
+
+.ov-section-label .eyebrow::before{
+  background:#00FFA1!important;
+}
+
+/* Maintain strong contrast for all Overview copy */
+.ov-col-desc{
+  color:#111111;
+}
+
+.ov-desc-heading{
+  color:#111111!important;
+}
+
+.ov-desc-body{
+  color:#444444!important;
+}
+
+/* Kicker and metadata contrast on light surfaces */
+.ov-kicker{
+  color:#777777!important;
+}
+
+.ov-meta-key{
+  color:#111111!important;
+}
+
+.ov-meta-val{
+  color:#444444!important;
+}
+
+/* Keep project titles dark across the light section system */
+.ov-project-title{
+  color:#111111!important;
+}
+
+.ov-project-title::after{
+  color:#B0B0B0!important;
+}
+
+/* More white breathing room in supporting sections */
+#work-index{
+  background:#FFFFFF!important;
+}
+
+.banner-gallery{
+  background:#EBEBEB!important;
+}
+
+footer{
+  background:#FFFFFF!important;
+}
+
+/* Navigation should feel visually connected to white content */
+nav{
+  background:rgba(255,255,255,.86)!important;
+}
+
+/* Detail captions remain legible regardless of section surface */
+.ov-detail-title{
+  color:#111111!important;
+}
+
+.ov-detail-desc{
+  color:#444444!important;
+}
+
+.ov-detail-num{
+  color:#B0B0B0!important;
+}
+
+/* Keep only large project numbers in blend mode */
+.ov-big-num{
+  color:#FFFFFF!important;
+  mix-blend-mode:difference!important;
+}
+
+/* On mobile, prioritize readability over blend effects */
+
+
+
+
+/* OVERVIEW LABEL — line + mint tag */
+.ov-section-label{
+  display:flex;
+  align-items:center;
+  min-height:24px;
+  padding-left:38px;
+}
+
+.ov-section-label .eyebrow{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  padding:4px 7px 4px 9px;
+  background:#00FFA1;
+  color:#111111!important;
+  font-size:10px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  mix-blend-mode:normal!important;
+}
+
+.ov-section-label .eyebrow::before{
+  content:'';
+  position:absolute;
+  top:50%;
+  right:calc(100% + 12px);
+  width:26px;
+  height:1px;
+  background:#00FFA1!important;
+  transform:translateY(-50%);
+}
+
+
+
+
+
+/* VIDEO VIEW BUTTON — black rectangular label with mint accent */
+.ov-video-view{
+  width:auto;
+  min-width:132px;
+  height:46px;
+  padding:0 18px;
+  border-radius:0;
+  background:#111111;
+  border:1px solid rgba(0,255,161,.22);
+  box-shadow:0 10px 28px rgba(0,0,0,.18);
+  opacity:0;
+  transform:translate(-50%,-50%) translateY(8px);
+  transition:
+    opacity .28s var(--expo),
+    transform .38s var(--expo),
+    background .28s ease,
+    border-color .28s ease;
+}
+
+.ov-video-view::after{
+  content:'';
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:10px;
+  height:1px;
+  background:#00FFA1;
+  transform:scaleX(1);
+  transform-origin:left;
+  transition:
+    transform .35s var(--expo),
+    background .28s ease;
+}
+
+.ov-video-view-text{
+  position:relative;
+  z-index:1;
+  color:#00FFA1!important;
+  mix-blend-mode:normal!important;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.ov-main-video:hover .ov-video-view{
+  opacity:1;
+  transform:translate(-50%,-50%) translateY(0);
+}
+
+.ov-main-video:hover .ov-video-view,
+.ov-video-view:hover{
+  background:#111111;
+  border-color:#00FFA1;
+}
+
+.ov-main-video:hover .ov-video-view::after{
+  transform:scaleX(.72);
+}
+
+.ov-main-video.is-playing .ov-video-view{
+  opacity:0;
+  transform:translate(-50%,-50%) translateY(6px);
+}
+
+@media(max-width:760px){
+  .ov-video-view{
+    min-width:116px;
+    height:42px;
+    padding:0 15px;
+  }
+
+  .ov-video-view::after{
+    left:15px;
+    right:15px;
+    bottom:9px;
+  }
+
+  .ov-video-view-text{
+    font-size:10px;
+  }
+}
+
+/* Portfolio cover image removed: keep only the black cover and mint headline. */
+.intro-portfolio{
+  display:none!important;
+}
+
+
+/* === Project surface adjustments === */
+#p02-ov{
+  background:#080810 !important;
+}
+#p03-ov{
+  background:#111111 !important;
+  color:#FFFFFF !important;
+}
+#p02-ov .ov-project-title,
+#p02-ov .ov-desc-heading,
+#p02-ov .ov-detail-title,
+#p02-ov .ov-meta-key{
+  color:#FFFFFF !important;
+}
+
+#p02-ov .ov-desc-body,
+#p02-ov .ov-detail-desc,
+#p02-ov .ov-meta-val,
+#p02-ov .ov-kicker,
+#p02-ov .ov-detail-num{
+  color:#FFFFFF !important;
+}
+#p03-ov .ov-project-title,
+#p03-ov .ov-desc-heading,
+#p03-ov .ov-detail-title,
+#p03-ov .ov-meta-key{
+  color:#FFFFFF !important;
+}
+#p03-ov .ov-desc-body,
+#p03-ov .ov-detail-desc,
+#p03-ov .ov-meta-val,
+#p03-ov .ov-kicker,
+#p03-ov .ov-detail-num{
+  color:#B0B0B0 !important;
+}
+#p04-ov .eyebrow{
+  color:#FFFFFF !important;
+}
+
+/* Project 01 large number accent */
+#p01-ov .ov-big-num{
+  color:#00FFA1 !important;
+  mix-blend-mode:normal !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+
+
+/* ═════════════════════════════════════════════
+   FINAL COVER / VIEW / OVERVIEW REFINEMENT
+═════════════════════════════════════════════ */
+
+/* Cover inspired by the supplied reference, while keeping the existing GNB untouched */
+#intro{
+  min-height:185vh;
+  padding:0;
+  background:#F6F6F6;
+  color:#111111;
+  border-bottom:1px solid rgba(17,17,17,.12);
+}
+.intro-stage{
+  position:sticky;
+  top:0;
+  height:100vh;
+  min-height:680px;
+  overflow:hidden;
+  background:#F6F6F6;
+  color:#111111;
+  isolation:isolate;
+}
+.intro-stage::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    linear-gradient(to right,transparent calc(16.5% - 1px),rgba(17,17,17,.08) 16.5%,transparent calc(16.5% + 1px)),
+    linear-gradient(to right,transparent calc(91.5% - 1px),rgba(17,17,17,.07) 91.5%,transparent calc(91.5% + 1px)),
+    linear-gradient(to bottom,transparent calc(85% - 1px),rgba(17,17,17,.09) 85%,transparent calc(85% + 1px));
+}
+.cover-copy{
+  position:absolute;
+  left:clamp(34px,8vw,128px);
+  top:50%;
+  z-index:3;
+  width:min(43vw,650px);
+  transform:translateY(-52%);
+}
+.cover-status{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:32px;
+  padding:8px 13px;
+  border:1px solid rgba(17,17,17,.09);
+  border-radius:999px;
+  background:#FFFFFF;
+  box-shadow:0 8px 24px rgba(17,17,17,.06);
+  color:#444444;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.02em;
+}
+.cover-status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#00FFA1;
+  box-shadow:0 0 0 5px rgba(0,255,161,.13);
+}
+.cover-title{
+  display:flex;
+  flex-direction:column;
+  margin:0;
+  font-size:clamp(58px,6.1vw,108px);
+  line-height:.94;
+  letter-spacing:-.068em;
+}
+.cover-title span{
+  color:#B0B0B0;
+  font-weight:500;
+}
+.cover-title strong{
+  color:#111111;
+  font-weight:650;
+}
+.cover-desc{
+  width:min(520px,90%);
+  margin-top:26px;
+  color:#444444;
+  font-size:clamp(14px,1.15vw,18px);
+  line-height:1.55;
+  letter-spacing:-.015em;
+}
+.cover-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  margin-top:28px;
+  padding:12px 16px;
+  border-radius:999px;
+  background:#111111;
+  color:#FFFFFF;
+  font-size:12px;
+  font-weight:650;
+  box-shadow:0 14px 34px rgba(17,17,17,.18);
+  transition:transform .3s var(--expo),background .25s,color .25s;
+}
+.cover-cta span{color:#00FFA1}
+.cover-cta:hover{
+  transform:translateY(-2px);
+  background:#00FFA1;
+  color:#111111;
+}
+.cover-cta:hover span{color:#111111}
+
+.cover-project-stack{
+  position:absolute;
+  right:clamp(40px,7vw,120px);
+  top:50%;
+  z-index:2;
+  width:min(43vw,690px);
+  aspect-ratio:1.25/1;
+  transform:translateY(-48%);
+  perspective:1400px;
+}
+.cover-project-card{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:76%;
+  height:68%;
+  margin:0;
+  overflow:hidden;
+  border-radius:18px;
+  border:1px solid rgba(17,17,17,.12);
+  background:#111111;
+  box-shadow:0 28px 70px rgba(17,17,17,.2);
+  transform-origin:50% 100%;
+  will-change:transform,opacity,filter;
+}
+.cover-project-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.cover-project-card--1{z-index:4;transform:translate(-43%,-42%) rotate(6deg)}
+.cover-project-card--2{z-index:3;transform:translate(-56%,-50%) rotate(-3deg)}
+.cover-project-card--3{z-index:2;transform:translate(-47%,-59%) rotate(4deg)}
+.cover-project-card--4{z-index:1;transform:translate(-62%,-62%) rotate(-8deg)}
+
+.cover-foot{
+  position:absolute;
+  left:clamp(34px,8vw,128px);
+  right:clamp(34px,8vw,128px);
+  bottom:28px;
+  z-index:3;
+  display:flex;
+  justify-content:space-between;
+  color:#B0B0B0;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+/* Overview tag text: white */
+.ov-section-label .eyebrow{
+  color:#FFFFFF!important;
+}
+
+/* Smaller, cleaner VIEW button — no underline and no border */
+.ov-video-view{
+  min-width:88px!important;
+  width:auto!important;
+  height:34px!important;
+  padding:0 13px!important;
+  border:none!important;
+  border-radius:2px!important;
+  background:#111111!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.18)!important;
+}
+.ov-video-view::after{
+  display:none!important;
+}
+.ov-video-view-text{
+  color:#00FFA1!important;
+  font-size:9px!important;
+  letter-spacing:.14em!important;
+}
+.ov-main-video:hover .ov-video-view{
+  transform:translate(-50%,-50%) translateY(0) scale(1)!important;
+}
+
+/* Project 04 remains dark with readable Overview label */
+#p04-ov .ov-section-label .eyebrow{
+  color:#FFFFFF!important;
+}
+
+
+
+@media(max-width:600px){
+  .cover-copy{top:18%}
+  .cover-status{margin-bottom:20px}
+  .cover-title{font-size:12.8vw}
+  .cover-desc{font-size:13px;margin-top:18px}
+  .cover-cta{margin-top:18px}
+  .cover-project-stack{
+    top:64%;
+    width:88vw;
+  }
+  .cover-project-card{
+    border-radius:12px;
+    width:78%;
+    height:64%;
+  }
+  .cover-foot{bottom:18px}
+}
+
+
+/* Overview label back to black */
+.ov-section-label .eyebrow{
+  color:#111111 !important;
+}
+
+
+/* ═════════════════════════════════════════════
+   COVER FOCUS SLIDESHOW — 6 projects / 1 second
+═════════════════════════════════════════════ */
+.cover-project-stack,
+.cover-project-card{
+  display:none!important;
+}
+
+.cover-focus-viewer{
+  position:absolute;
+  right:clamp(42px,7vw,118px);
+  top:50%;
+  z-index:3;
+  width:min(43vw,690px);
+  aspect-ratio:1.55/1;
+  transform:translateY(-48%);
+  padding:28px;
+  background:transparent;
+  will-change:transform,opacity,filter;
+}
+
+.focus-slides{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#EBEBEB;
+  box-shadow:0 22px 60px rgba(17,17,17,.12);
+}
+
+.focus-slide{
+  position:absolute;
+  inset:0;
+  margin:0;
+  opacity:0;
+  transform:translate3d(8%,0,0) scale(1.035);
+  filter:blur(7px);
+  clip-path:inset(0 0 0 100%);
+  transition:
+    opacity .32s cubic-bezier(.22,1,.36,1),
+    transform .54s cubic-bezier(.16,1,.3,1),
+    filter .45s cubic-bezier(.16,1,.3,1),
+    clip-path .52s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;
+  will-change:opacity,transform,filter,clip-path;
+}
+
+.focus-slide.is-active{
+  opacity:1;
+  z-index:2;
+  transform:translate3d(0,0,0) scale(1);
+  filter:blur(0);
+  clip-path:inset(0 0 0 0);
+}
+
+.focus-slide.is-leaving{
+  opacity:0;
+  z-index:1;
+  transform:translate3d(-8%,0,0) scale(.985);
+  filter:blur(5px);
+  clip-path:inset(0 100% 0 0);
+}
+
+.focus-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+
+.focus-corner{
+  position:absolute;
+  z-index:5;
+  width:34px;
+  height:34px;
+  pointer-events:none;
+}
+
+.focus-corner::before,
+.focus-corner::after{
+  content:'';
+  position:absolute;
+  background:#00FFA1;
+}
+
+.focus-corner::before{width:30px;height:3px}
+.focus-corner::after{width:3px;height:30px}
+
+.focus-corner--tl{left:0;top:0}
+.focus-corner--tr{right:0;top:0;transform:rotate(90deg)}
+.focus-corner--br{right:0;bottom:0;transform:rotate(180deg)}
+.focus-corner--bl{left:0;bottom:0;transform:rotate(-90deg)}
+
+.focus-cross{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:5;
+  width:54px;
+  height:54px;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+
+.focus-cross span{
+  position:absolute;
+  left:50%;
+  top:50%;
+  display:block;
+  background:#00FFA1;
+  transform:translate(-50%,-50%);
+}
+
+.focus-cross span:first-child{width:15px;height:1px}
+.focus-cross span:last-child{width:1px;height:15px}
+
+.focus-index{
+  position:absolute;
+  right:34px;
+  bottom:34px;
+  z-index:6;
+  display:flex;
+  gap:6px;
+  padding:6px 8px;
+  background:rgba(17,17,17,.78);
+  color:#FFFFFF;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.12em;
+  font-variant-numeric:tabular-nums;
+  backdrop-filter:blur(8px);
+}
+
+.focus-index-current{
+  color:#00FFA1;
+}
+
+
+
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .focus-slide{
+    transition:none!important;
+    transform:none!important;
+    filter:none!important;
+  }
+}
+
+
+/* COVER VIEWER — immediate first paint + stable 16:9 ratio */
+.cover-focus-viewer{
+  width:min(44vw,720px)!important;
+  aspect-ratio:16 / 9!important;
+  opacity:1!important;
+  filter:none!important;
+}
+
+.focus-slides{
+  aspect-ratio:16 / 9;
+  background:#F6F6F6;
+}
+
+.focus-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* The first slide must already be visible before JS runs */
+.focus-slide:first-child,
+.focus-slide.is-active{
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+  filter:none;
+  clip-path:inset(0 0 0 0);
+}
+
+/* Cover copy is also visible immediately */
+.cover-copy,
+.cover-foot{
+  opacity:1;
+  filter:none;
+}
+
+
+
+
+
+
+
+
+/* COVER REFINEMENT — smaller viewer, hover-only focus guides */
+.cover-focus-viewer{
+  width:min(36vw,590px)!important;
+  aspect-ratio:16 / 9!important;
+}
+
+/* Focus guides stay hidden until the viewer is hovered or keyboard-focused */
+.focus-corner,
+.focus-cross,
+.focus-index{
+  opacity:0;
+  visibility:hidden;
+  transition:
+    opacity .28s cubic-bezier(.22,1,.36,1),
+    visibility .28s;
+}
+
+.cover-focus-viewer:hover .focus-corner,
+.cover-focus-viewer:hover .focus-cross,
+.cover-focus-viewer:hover .focus-index,
+.cover-focus-viewer:focus-within .focus-corner,
+.cover-focus-viewer:focus-within .focus-cross,
+.cover-focus-viewer:focus-within .focus-index{
+  opacity:1;
+  visibility:visible;
+}
+
+/* Keep both sides visually fixed for the full intro scroll duration */
+.cover-copy,
+.cover-focus-viewer,
+.cover-foot{
+  opacity:1!important;
+  filter:none!important;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ═════════════════════════════════════════════
+   CENTERED PORTFOLIO HERO
+   GNB is intentionally untouched.
+═════════════════════════════════════════════ */
+
+#intro{
+  min-height:178vh!important;
+  padding:0!important;
+  background:#F6F6F6!important;
+  color:#111111!important;
+  border-bottom:1px solid rgba(17,17,17,.12);
+}
+
+.intro-stage--centered{
+  position:sticky!important;
+  top:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  height:100vh!important;
+  min-height:700px!important;
+  padding:86px 32px 34px!important;
+  overflow:hidden!important;
+  background:#F6F6F6!important;
+  color:#111111!important;
+  isolation:isolate;
+}
+
+.intro-stage--centered::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to right,
+      transparent calc(8% - 1px),
+      rgba(17,17,17,.06) 8%,
+      transparent calc(8% + 1px)
+    ),
+    linear-gradient(
+      to right,
+      transparent calc(92% - 1px),
+      rgba(17,17,17,.06) 92%,
+      transparent calc(92% + 1px)
+    );
+}
+
+.center-hero-copy{
+  position:relative;
+  z-index:3;
+  width:min(1200px,92vw);
+  text-align:center;
+}
+
+.center-hero-kicker{
+  margin-bottom:14px;
+  color:#777777;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+
+.center-hero-title{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin:0;
+  font-size:clamp(54px,7.4vw,132px);
+  line-height:.82;
+  letter-spacing:-.078em;
+  text-transform:uppercase;
+}
+
+.center-hero-title span{
+  color:#B0B0B0;
+  font-weight:500;
+}
+
+.center-hero-title strong{
+  color:#111111;
+  font-weight:700;
+}
+
+.center-hero-desc{
+  width:min(560px,88vw);
+  margin:18px auto 0;
+  color:#444444;
+  font-size:clamp(12px,1vw,15px);
+  line-height:1.6;
+  letter-spacing:-.01em;
+}
+
+/* Centered 16:9 preview */
+.cover-focus-viewer--centered{
+  position:relative!important;
+  right:auto!important;
+  top:auto!important;
+  z-index:3!important;
+  width:min(48vw,720px)!important;
+  min-width:480px;
+  aspect-ratio:16 / 9!important;
+  margin:28px auto 0!important;
+  padding:20px!important;
+  transform:none!important;
+  opacity:1!important;
+  filter:none!important;
+  outline:none;
+}
+
+.cover-focus-viewer--centered .focus-slides{
+  width:100%;
+  height:100%;
+  aspect-ratio:16 / 9;
+  overflow:hidden;
+  background:#EBEBEB;
+  border:1px solid rgba(17,17,17,.12);
+  box-shadow:0 18px 50px rgba(17,17,17,.13);
+}
+
+.cover-focus-viewer--centered .focus-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Focus guides appear only on hover/focus */
+.cover-focus-viewer--centered .focus-corner,
+.cover-focus-viewer--centered .focus-cross,
+.cover-focus-viewer--centered .focus-index{
+  opacity:0!important;
+  visibility:hidden!important;
+  transition:
+    opacity .26s cubic-bezier(.22,1,.36,1),
+    visibility .26s!important;
+}
+
+.cover-focus-viewer--centered:hover .focus-corner,
+.cover-focus-viewer--centered:hover .focus-cross,
+.cover-focus-viewer--centered:hover .focus-index,
+.cover-focus-viewer--centered:focus-visible .focus-corner,
+.cover-focus-viewer--centered:focus-visible .focus-cross,
+.cover-focus-viewer--centered:focus-visible .focus-index{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+.center-hero-meta{
+  position:relative;
+  z-index:3;
+  display:flex;
+  justify-content:space-between;
+  width:min(720px,48vw);
+  margin-top:14px;
+  color:#777777;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.center-scroll-link{
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  z-index:3;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  transform:translateX(-50%);
+  color:#444444;
+  font-size:9px;
+  font-weight:650;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.center-scroll-link b{
+  color:#00FFA1;
+  font-size:16px;
+  font-weight:500;
+  animation:centerHeroArrow 1.6s ease-in-out infinite;
+}
+
+@keyframes centerHeroArrow{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(5px)}
+}
+
+/* Hide obsolete left/right hero elements from earlier versions */
+.cover-copy,
+.cover-foot,
+.cover-project-stack,
+.cover-project-card{
+  display:none!important;
+}
+
+
+
+
+
+
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .center-scroll-link b{
+    animation:none!important;
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   SPLIT TYPOGRAPHY HERO
+   GNB and project sections remain untouched.
+═════════════════════════════════════════════ */
+
+#intro{
+  min-height:176vh!important;
+  padding:0!important;
+  background:#F6F6F6!important;
+  color:#111111!important;
+  border-bottom:1px solid rgba(17,17,17,.12);
+}
+
+.intro-stage--split{
+  position:sticky!important;
+  top:0!important;
+  height:100vh!important;
+  min-height:700px!important;
+  overflow:hidden!important;
+  background:#F6F6F6!important;
+  color:#111111!important;
+  isolation:isolate;
+}
+
+.intro-stage--split::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to right,
+      transparent calc(8% - 1px),
+      rgba(17,17,17,.055) 8%,
+      transparent calc(8% + 1px)
+    ),
+    linear-gradient(
+      to right,
+      transparent calc(92% - 1px),
+      rgba(17,17,17,.055) 92%,
+      transparent calc(92% + 1px)
+    );
+}
+
+/* Split title composition */
+.split-hero-title{
+  position:absolute;
+  z-index:4;
+  margin:0;
+  text-transform:uppercase;
+  letter-spacing:-.07em;
+  line-height:.86;
+  white-space:nowrap;
+  pointer-events:none;
+}
+
+.split-hero-title--top{
+  top:15%;
+  left:18.5%;
+  font-size:clamp(52px,6vw,112px);
+}
+
+.split-hero-title--top span{
+  display:inline-block;
+  padding:0 .04em .03em;
+  background:#00FFA1;
+  color:#111111;
+  font-weight:500;
+}
+
+.split-hero-title--bottom{
+  top:73%;
+  right:14%;
+  font-size:clamp(56px,6.4vw,120px);
+}
+
+.split-hero-title--bottom strong{
+  color:#111111; opacity: 0.6;
+  font-weight:500;
+}
+
+/* Smaller preview, slightly off-center */
+.cover-focus-viewer--split{
+  position:absolute!important;
+  left:50%!important;
+  top:49%!important;
+  right:auto!important;
+  z-index:3!important;
+  width:min(30vw,470px)!important;
+  min-width:360px;
+  aspect-ratio:16 / 9!important;
+  margin:0!important;
+  padding:16px!important;
+  transform:translate(-50%,-50%)!important;
+  opacity:1!important;
+  filter:none!important;
+  outline:none;
+}
+
+.cover-focus-viewer--split .focus-slides{
+  width:100%;
+  height:100%;
+  aspect-ratio:16 / 9;
+  overflow:hidden;
+  background:#EBEBEB;
+  border:1px solid rgba(17,17,17,.12);
+  box-shadow:0 16px 42px rgba(17,17,17,.12);
+}
+
+.cover-focus-viewer--split .focus-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Focus guides only on hover/focus */
+.cover-focus-viewer--split .focus-corner,
+.cover-focus-viewer--split .focus-cross,
+.cover-focus-viewer--split .focus-index{
+  opacity:0!important;
+  visibility:hidden!important;
+  transition:
+    opacity .26s cubic-bezier(.22,1,.36,1),
+    visibility .26s!important;
+}
+
+.cover-focus-viewer--split:hover .focus-corner,
+.cover-focus-viewer--split:hover .focus-cross,
+.cover-focus-viewer--split:hover .focus-index,
+.cover-focus-viewer--split:focus-visible .focus-corner,
+.cover-focus-viewer--split:focus-visible .focus-cross,
+.cover-focus-viewer--split:focus-visible .focus-index{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+.split-hero-meta{
+  position:absolute;
+  left:50%;
+  bottom:28px;
+  z-index:4;
+  display:flex;
+  justify-content:space-between;
+  width:min(760px,64vw);
+  transform:translateX(-50%);
+  color:#777777;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.split-scroll-link{
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  z-index:4;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transform:translateX(-50%);
+  color:#444444;
+  font-size:9px;
+  font-weight:650;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.split-scroll-link b{
+  color:#00FFA1;
+  font-size:15px;
+  font-weight:500;
+  animation:splitHeroArrow 1.6s ease-in-out infinite;
+}
+
+@keyframes splitHeroArrow{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(5px)}
+}
+
+/* Hide previous hero elements */
+.center-hero-copy,
+.center-hero-meta,
+.center-scroll-link,
+.cover-copy,
+.cover-foot,
+.cover-project-stack,
+.cover-project-card{
+  display:none!important;
+}
+
+
+
+
+
+
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .split-scroll-link b{
+    animation:none!important;
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   FINAL ORBIT PORTFOLIO HERO
+   - GNB and project sections are untouched
+   - Center image remains interaction-led
+   - Capability words rotate extremely slowly
+═════════════════════════════════════════════ */
+
+#intro{
+  min-height:176vh !important;
+  padding:0 !important;
+  display:block !important;
+  position:relative !important;
+  overflow:visible !important;
+  background:#F6F6F6 !important;
+  color:#111111 !important;
+  border-bottom:1px solid rgba(17,17,17,.12) !important;
+}
+
+.intro-stage--orbit{
+  position:sticky !important;
+  top:0 !important;
+  width:100% !important;
+  height:100vh !important;
+  min-height:700px !important;
+  overflow:hidden !important;
+  background:#F6F6F6 !important;
+  color:#111111 !important;
+  isolation:isolate;
+}
+
+/* quiet vertical guide lines, matching the rest of the portfolio system */
+.intro-stage--orbit::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to right,
+      transparent calc(8% - 1px),
+      rgba(17,17,17,.055) 8%,
+      transparent calc(8% + 1px)
+    ),
+    linear-gradient(
+      to right,
+      transparent calc(92% - 1px),
+      rgba(17,17,17,.055) 92%,
+      transparent calc(92% + 1px)
+    );
+}
+
+/* Remove obsolete split/center hero pieces if any legacy CSS remains */
+.intro-stage--orbit .split-hero-title,
+.intro-stage--orbit .center-hero-copy,
+.intro-stage--orbit .center-hero-meta,
+.intro-stage--orbit .center-scroll-link,
+.intro-stage--orbit .cover-copy,
+.intro-stage--orbit .cover-foot,
+.intro-stage--orbit .cover-project-stack,
+.intro-stage--orbit .cover-project-card{
+  display:none !important;
+}
+
+/* ═════════════════════════════════════════════
+   CENTER PROJECT PREVIEW
+═════════════════════════════════════════════ */
+.cover-focus-viewer--orbit{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  right:auto !important;
+  z-index:5 !important;
+
+  width:min(18vw,270px) !important;
+  min-width:220px;
+  aspect-ratio:2 / 3 !important;
+
+  margin:0 !important;
+  padding:14px !important;
+
+  transform:translate(-50%,-50%) !important;
+  opacity:1 !important;
+  filter:none !important;
+  outline:none;
+
+  cursor:pointer;
+  will-change:transform;
+}
+
+.cover-focus-viewer--orbit .focus-slides{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#EBEBEB;
+  border:1px solid rgba(17,17,17,.12);
+  box-shadow:0 14px 36px rgba(17,17,17,.10);
+}
+
+.cover-focus-viewer--orbit .focus-slide{
+  position:absolute;
+  inset:0;
+  margin:0;
+
+  opacity:0;
+  transform:translate3d(5%,0,0) scale(1.025);
+  filter:blur(4px);
+  clip-path:inset(0 0 0 100%);
+
+  transition:
+    opacity .30s cubic-bezier(.22,1,.36,1),
+    transform .52s cubic-bezier(.16,1,.3,1),
+    filter .45s cubic-bezier(.16,1,.3,1),
+    clip-path .50s cubic-bezier(.16,1,.3,1);
+
+  pointer-events:none;
+  will-change:opacity,transform,filter,clip-path;
+}
+
+.cover-focus-viewer--orbit .focus-slide.is-active{
+  z-index:2;
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+  filter:blur(0);
+  clip-path:inset(0 0 0 0);
+}
+
+.cover-focus-viewer--orbit .focus-slide.is-leaving{
+  z-index:1;
+  opacity:0;
+  transform:translate3d(-5%,0,0) scale(.99);
+  filter:blur(4px);
+  clip-path:inset(0 100% 0 0);
+}
+
+.cover-focus-viewer--orbit .focus-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  transition:transform .65s cubic-bezier(.16,1,.3,1);
+}
+
+.cover-focus-viewer--orbit:hover .focus-slide.is-active img{
+  transform:scale(1.012);
+}
+
+/* ═════════════════════════════════════════════
+   HOVER-ONLY FOCUS BRACKETS
+═════════════════════════════════════════════ */
+.cover-focus-viewer--orbit .focus-corner,
+.cover-focus-viewer--orbit .focus-cross,
+.cover-focus-viewer--orbit .focus-index{
+  opacity:0 !important;
+  visibility:hidden !important;
+  transition:
+    opacity .28s cubic-bezier(.22,1,.36,1),
+    visibility .28s !important;
+}
+
+.cover-focus-viewer--orbit:hover .focus-corner,
+.cover-focus-viewer--orbit:hover .focus-cross,
+.cover-focus-viewer--orbit:hover .focus-index,
+.cover-focus-viewer--orbit:focus-visible .focus-corner,
+.cover-focus-viewer--orbit:focus-visible .focus-cross,
+.cover-focus-viewer--orbit:focus-visible .focus-index{
+  opacity:1 !important;
+  visibility:visible !important;
+}
+
+/* ═════════════════════════════════════════════
+   IRREGULAR ORBIT
+═════════════════════════════════════════════ */
+.hero-orbit{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:4;
+
+  width:min(70vw,1050px);
+  height:min(61vh,570px);
+
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+
+  animation:heroOrbitRotate 38s linear infinite;
+  will-change:transform;
+}
+
+.orbit-word{
+  position:absolute;
+  color:#111111;
+  font-size:clamp(14px,1.35vw,23px);
+  font-weight:600;
+  letter-spacing:-.035em;
+  line-height:1;
+  white-space:nowrap;
+
+  /* Counter-rotation keeps the text upright while its position travels */
+  animation:heroOrbitCounterRotate 38s linear infinite;
+  will-change:transform;
+}
+
+/* Deliberately uneven radii/spacing — avoids infographic/skill-map look */
+.orbit-word--1{left:5%;  top:47%;}
+.orbit-word--2{left:15%; top:12%;}
+.orbit-word--3{left:48%; top:4%;}
+.orbit-word--4{right:5%; top:18%;}
+.orbit-word--5{right:7%; top:58%;}
+.orbit-word--6{left:48%; bottom:2%;}
+
+@keyframes heroOrbitRotate{
+  from{transform:translate(-50%,-50%) rotate(0deg);}
+  to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+@keyframes heroOrbitCounterRotate{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(-360deg);}
+}
+
+/* ═════════════════════════════════════════════
+   RANDOM SINGLE ACTIVE HIGHLIGHT
+═════════════════════════════════════════════ */
+.orbit-word span{
+  display:inline-block;
+  padding:4px 7px 5px;
+  background:transparent;
+  color:#111111;
+
+  transition:
+    background-color .30s cubic-bezier(.22,1,.36,1),
+    color .30s cubic-bezier(.22,1,.36,1),
+    transform .30s cubic-bezier(.22,1,.36,1);
+}
+
+.orbit-word.is-active span{
+  background:#00FFA1;
+  color:#FFFFFF;
+  transform:translateY(-1px);
+}
+
+/* ═════════════════════════════════════════════
+   BOTTOM META / SCROLL
+═════════════════════════════════════════════ */
+.orbit-hero-meta{
+  position:absolute;
+  left:50%;
+  bottom:28px;
+  z-index:6;
+
+  display:flex;
+  justify-content:space-between;
+  width:min(760px,64vw);
+
+  transform:translateX(-50%);
+
+  color:#777777;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.orbit-scroll-link{
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  z-index:7;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  transform:translateX(-50%);
+
+  color:#444444;
+  font-size:9px;
+  font-weight:650;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.orbit-scroll-link b{
+  color:#00FFA1;
+  font-size:15px;
+  font-weight:500;
+  animation:orbitArrow 1.7s ease-in-out infinite;
+}
+
+@keyframes orbitArrow{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(5px);}
+}
+
+/* ═════════════════════════════════════════════
+   RESPONSIVE
+═════════════════════════════════════════════ */
+
+
+
+
+
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .hero-orbit,
+  .orbit-word,
+  .orbit-scroll-link b{
+    animation:none !important;
+  }
+
+  .cover-focus-viewer--orbit .focus-slide{
+    transition:none !important;
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   CENTER PREVIEW HOVER → BRAND-FOCUSED / WEB DESIGN
+═════════════════════════════════════════════ */
+
+/* Orbit words fade away only while the center image is hovered/focused */
+.hero-orbit{
+  transition:
+    opacity .42s cubic-bezier(.22,1,.36,1),
+    filter .42s cubic-bezier(.22,1,.36,1);
+}
+
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:hover) .hero-orbit,
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:focus-visible) .hero-orbit{
+  opacity:0;
+  filter:blur(7px);
+}
+
+/* Hover title layer */
+.orbit-hover-title{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+
+  opacity:0;
+  visibility:hidden;
+
+  transition:
+    opacity .38s cubic-bezier(.22,1,.36,1),
+    visibility .38s;
+}
+
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:hover) .orbit-hover-title,
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:focus-visible) .orbit-hover-title{
+  opacity:1;
+  visibility:visible;
+}
+
+/* BRAND-FOCUSED — upper left */
+.orbit-hover-title__top{
+  position:absolute;
+  left:17.5%;
+  top:17%;
+  overflow:hidden;
+
+  font-size:clamp(48px,5.5vw,102px);
+  line-height:.9;
+  letter-spacing:-.065em;
+  font-weight:500;
+  text-transform:uppercase;
+  white-space:nowrap;
+
+  transform:translateY(16px);
+  opacity:0;
+
+  transition:
+    transform .5s cubic-bezier(.16,1,.3,1),
+    opacity .34s ease;
+}
+
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:hover) .orbit-hover-title__top,
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:focus-visible) .orbit-hover-title__top{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.orbit-hover-title__top span{
+  position:relative;
+  z-index:1;
+  display:inline-block;
+  padding:.01em .035em .035em;
+  color:#111111;
+}
+
+/* Lime bar SWEEPS through instead of staying behind the text */
+.orbit-hover-title__top span::before{
+  content:'';
+  position:absolute;
+  left:-8%;
+  top:50%;
+  z-index:-1;
+
+  width:116%;
+  height:.82em;
+
+  background:#00FFA1;
+
+  transform:translate3d(-112%,-48%,0);
+  will-change:transform;
+}
+
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:hover)
+.orbit-hover-title__top span::before,
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:focus-visible)
+.orbit-hover-title__top span::before{
+  animation:brandBarPass 1.25s cubic-bezier(.16,1,.3,1) .08s both;
+}
+
+@keyframes brandBarPass{
+  0%{
+    transform:translate3d(-112%,-48%,0);
+  }
+  42%{
+    transform:translate3d(0,-48%,0);
+  }
+  68%{
+    transform:translate3d(0,-48%,0);
+  }
+  100%{
+    transform:translate3d(112%,-48%,0);
+  }
+}
+
+/* WEB DESIGN — lower right */
+.orbit-hover-title__bottom{
+  position:absolute;
+  right:15%;
+  top:70%;
+
+  font-size:clamp(52px,6vw,112px);
+  line-height:.88;
+  letter-spacing:-.07em;
+  text-transform:uppercase;
+  white-space:nowrap;
+
+  transform:translateY(-14px);
+  opacity:0;
+
+  transition:
+    transform .52s cubic-bezier(.16,1,.3,1) .05s,
+    opacity .36s ease .05s;
+}
+
+.orbit-hover-title__bottom strong{
+  color:#111111;
+  font-weight:700;
+}
+
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:hover) .orbit-hover-title__bottom,
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:focus-visible) .orbit-hover-title__bottom{
+  transform:translateY(0);
+  opacity:1;
+}
+
+/* Keep the image visually above the hover typography where they overlap */
+.cover-focus-viewer--orbit{
+  z-index:6 !important;
+}
+
+/* Touch / narrow layouts */
+@media(max-width:760px){
+  .orbit-hover-title__top{
+    left:7%;
+    top:18%;
+    font-size:clamp(34px,10vw,68px);
+  }
+
+  .orbit-hover-title__bottom{
+    right:6%;
+    top:68%;
+    font-size:clamp(38px,11vw,72px);
+  }
+}
+
+/* :has() fallback — JS adds .is-preview-hover for older browsers */
+.intro-stage--orbit.is-preview-hover .hero-orbit{
+  opacity:0;
+  filter:blur(7px);
+}
+
+.intro-stage--orbit.is-preview-hover .orbit-hover-title{
+  opacity:1;
+  visibility:visible;
+}
+
+.intro-stage--orbit.is-preview-hover .orbit-hover-title__top{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.intro-stage--orbit.is-preview-hover .orbit-hover-title__bottom{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.intro-stage--orbit.is-preview-hover .orbit-hover-title__top span::before{
+  animation:brandBarPass 1.25s cubic-bezier(.16,1,.3,1) .08s both;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .orbit-hover-title__top span::before{
+    animation:none !important;
+    transform:translate3d(0,-48%,0);
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   FINAL HERO — IRREGULAR FLOATING KEYWORDS
+═════════════════════════════════════════════ */
+
+.hero-orbit.hero-keywords{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:4;
+  width:min(76vw,1180px);
+  height:min(68vh,650px);
+  transform:translate(-50%,-50%) !important;
+  animation:none !important;
+  opacity:1 !important;
+  filter:none !important;
+  pointer-events:none;
+}
+
+.hero-keywords .orbit-word{
+  position:absolute;
+  font-size:clamp(18px,1.35vw,26px);
+  line-height:1;
+  letter-spacing:-.035em;
+  font-weight:450;
+  color:#111111;
+  white-space:nowrap;
+  transform:none;
+}
+
+/* intentionally irregular distances from the center image */
+.hero-keywords .orbit-word--1{left:15%; top:5%;}
+.hero-keywords .orbit-word--2{right:1%; top:23%;}
+.hero-keywords .orbit-word--3{left:3%; top:61%;}
+.hero-keywords .orbit-word--4{right:18%; top:69%;}
+.hero-keywords .orbit-word--5{left:20%; bottom:0%;}
+
+/* independent, very slow floating motion */
+.hero-keywords .orbit-word--1{animation:floatKeyword1 15s ease-in-out infinite alternate !important;}
+.hero-keywords .orbit-word--2{animation:floatKeyword2 18s ease-in-out infinite alternate !important;}
+.hero-keywords .orbit-word--3{animation:floatKeyword3 13s ease-in-out infinite alternate !important;}
+.hero-keywords .orbit-word--4{animation:floatKeyword4 17s ease-in-out infinite alternate !important;}
+.hero-keywords .orbit-word--5{animation:floatKeyword5 20s ease-in-out infinite alternate !important;}
+
+@keyframes floatKeyword1{
+  from{transform:translate3d(-10px,-6px,0);}
+  to{transform:translate3d(18px,12px,0);}
+}
+@keyframes floatKeyword2{
+  from{transform:translate3d(8px,-10px,0);}
+  to{transform:translate3d(-20px,8px,0);}
+}
+@keyframes floatKeyword3{
+  from{transform:translate3d(-7px,10px,0);}
+  to{transform:translate3d(16px,-8px,0);}
+}
+@keyframes floatKeyword4{
+  from{transform:translate3d(12px,5px,0);}
+  to{transform:translate3d(-15px,-12px,0);}
+}
+@keyframes floatKeyword5{
+  from{transform:translate3d(-15px,4px,0);}
+  to{transform:translate3d(20px,-10px,0);}
+}
+
+.hero-keywords .orbit-word span{
+  display:inline-block;
+  padding:4px 7px 5px;
+  color:#111111;
+  background:transparent;
+  font-weight:450;
+  transition:
+    background-color .32s cubic-bezier(.22,1,.36,1),
+    color .32s cubic-bezier(.22,1,.36,1),
+    font-weight .32s cubic-bezier(.22,1,.36,1),
+    transform .32s cubic-bezier(.22,1,.36,1);
+}
+
+.hero-keywords .orbit-word.is-active span{
+  background:#00FFA1;
+  color:#FFFFFF;
+  font-weight:600;
+  transform:translateY(-1px);
+}
+
+/* remove the previous image-hover BRAND-FOCUSED / WEB DESIGN treatment */
+.orbit-hover-title{
+  display:none !important;
+}
+
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:hover) .hero-orbit,
+.intro-stage--orbit:has(.cover-focus-viewer--orbit:focus-visible) .hero-orbit,
+.intro-stage--orbit.is-preview-hover .hero-orbit{
+  opacity:1 !important;
+  filter:none !important;
+}
+
+/* center image remains the hero; hover only adds a restrained scale */
+.cover-focus-viewer--orbit{
+  transition:transform .55s cubic-bezier(.16,1,.3,1);
+}
+
+.cover-focus-viewer--orbit:hover{
+  transform:translate(-50%,-50%) scale(1.025) !important;
+}
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .hero-keywords .orbit-word{
+    animation:none !important;
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   FINAL COVER — WHITE EDITORIAL / VERTICAL PREVIEW
+   Reference mood: Bureau-style sparse navigation
+═════════════════════════════════════════════ */
+
+/* WHITE COVER */
+#intro,
+.intro-stage--orbit{
+  background:#FFFFFF !important;
+  color:#111111 !important;
+}
+
+#intro{
+  border-bottom:1px solid rgba(17,17,17,.10) !important;
+}
+
+.intro-stage--orbit::after{
+  background:none !important;
+}
+
+/* ─────────────────────────────────────────────
+   GNB — sparse editorial layout
+───────────────────────────────────────────── */
+.editorial-nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:500;
+
+  height:52px;
+  padding:0 14px;
+
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+
+  background:rgba(255,255,255,.92) !important;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  border-bottom:0 !important;
+
+  color:#111111;
+}
+
+.editorial-nav .nav-logo{
+  justify-self:start;
+
+  color:#111111 !important;
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:-.02em;
+  text-transform:none;
+}
+
+.editorial-nav .nav-items{
+  justify-self:center;
+
+  display:flex !important;
+  align-items:center;
+  gap:8px;
+
+  list-style:none;
+}
+
+.editorial-nav .nav-items li{
+  display:block;
+}
+
+.editorial-nav .nav-items a,
+.editorial-nav .nav-utility{
+  display:inline-flex;
+  align-items:center;
+
+  padding:5px 8px;
+
+  background:#F0F0F0;
+
+  color:#111111 !important;
+
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:-.01em;
+  line-height:1;
+
+  transition:
+    background-color .25s ease,
+    color .25s ease;
+}
+
+.editorial-nav .nav-items a::after{
+  display:none !important;
+}
+
+.editorial-nav .nav-items a:hover,
+.editorial-nav .nav-utility:hover{
+  background:#111111;
+  color:#FFFFFF !important;
+}
+
+.editorial-nav .nav-contact{
+  justify-self:end;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.editorial-nav .nav-contact-label,
+.editorial-nav .nav-contact-btn{
+  display:none !important;
+}
+
+/* ─────────────────────────────────────────────
+   CENTER PREVIEW — vertical ratio
+───────────────────────────────────────────── */
+.cover-focus-viewer--orbit{
+  left:50% !important;
+  top:50% !important;
+
+  width:min(24vw,360px) !important;
+  min-width:280px;
+
+  aspect-ratio:4 / 5 !important;
+
+  padding:13px !important;
+
+  transform:translate(-50%,-50%) !important;
+}
+
+.cover-focus-viewer--orbit .focus-slides{
+  width:100%;
+  height:100%;
+
+  aspect-ratio:4 / 5 !important;
+
+  background:#F4F4F4;
+
+  border:1px solid rgba(17,17,17,.10);
+
+  box-shadow:none !important;
+}
+
+.cover-focus-viewer--orbit .focus-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Keep the center image restrained on hover */
+.cover-focus-viewer--orbit:hover{
+  transform:translate(-50%,-50%) scale(1.018) !important;
+}
+
+/* ─────────────────────────────────────────────
+   FLOATING TYPOGRAPHY
+   retain five irregular words, no orbit
+───────────────────────────────────────────── */
+.hero-orbit.hero-keywords{
+  width:min(75vw,1160px);
+  height:min(68vh,650px);
+
+  opacity:1 !important;
+  filter:none !important;
+}
+
+.hero-keywords .orbit-word{
+  color:#111111;
+  font-size:clamp(18px,1.25vw,24px);
+  font-weight:450;
+}
+
+/* slightly rebalanced around a taller center image */
+.hero-keywords .orbit-word--1{
+  left:17%;
+  top:2%;
+}
+
+.hero-keywords .orbit-word--2{
+  right:1%;
+  top:20%;
+}
+
+.hero-keywords .orbit-word--3{
+  left:2%;
+  top:62%;
+}
+
+.hero-keywords .orbit-word--4{
+  right:15%;
+  top:69%;
+}
+
+.hero-keywords .orbit-word--5{
+  left:18%;
+  bottom:-2%;
+}
+
+/* random active green bar */
+.hero-keywords .orbit-word.is-active span{
+  background:#00FFA1;
+  color:#FFFFFF;
+  font-weight:600;
+}
+
+/* Bottom micro-copy */
+.orbit-hero-meta,
+.orbit-scroll-link{
+  color:#777777;
+}
+
+/* no hover replacement typography */
+.orbit-hover-title{
+  display:none !important;
+}
+
+/* responsive */
+
+
+
+
+
+
+
+/* ═════════════════════════════════════════════
+   FINAL TWEAK — restore previous keyword field
+   + smaller center preview
+═════════════════════════════════════════════ */
+
+/* Previous floating-keyword positions */
+.hero-keywords .orbit-word--1{
+  left:15% !important;
+  top:5% !important;
+}
+
+.hero-keywords .orbit-word--2{
+  right:1% !important;
+  top:23% !important;
+}
+
+.hero-keywords .orbit-word--3{
+  left:3% !important;
+  top:61% !important;
+}
+
+.hero-keywords .orbit-word--4{
+  right:18% !important;
+  top:69% !important;
+}
+
+.hero-keywords .orbit-word--5{
+  left:20% !important;
+  bottom:0% !important;
+}
+
+/* Smaller vertical center image */
+.cover-focus-viewer--orbit{
+  width:min(20vw,300px) !important;
+  min-width:240px !important;
+}
+
+/* Tablet */
+
+
+
+/* Mobile */
+
+
+
+
+/* ═════════════════════════════════════════════
+   FINAL POSITION FIX — keywords back around image
+   (same spatial field as the earlier orbit version,
+    but keeps the current floating motion)
+═════════════════════════════════════════════ */
+
+.hero-orbit.hero-keywords{
+  width:min(70vw,1050px) !important;
+  height:min(61vh,570px) !important;
+}
+
+/* Restore the earlier around-the-image positions */
+.hero-keywords .orbit-word--1{
+  left:5% !important;
+  top:47% !important;
+}
+
+.hero-keywords .orbit-word--2{
+  left:15% !important;
+  top:12% !important;
+}
+
+.hero-keywords .orbit-word--3{
+  left:48% !important;
+  top:4% !important;
+}
+
+.hero-keywords .orbit-word--4{
+  right:5% !important;
+  top:18% !important;
+}
+
+.hero-keywords .orbit-word--5{
+  right:7% !important;
+  top:58% !important;
+}
+
+/* Keep the smaller vertical center preview */
+.cover-focus-viewer--orbit{
+  width:min(20vw,300px) !important;
+  min-width:240px !important;
+}
+
+
+
+
+
+/* ═════════════════════════════════════════════
+   FINAL ORBIT FIX — words actually rotate around image
+═════════════════════════════════════════════ */
+
+.hero-orbit.hero-keywords{
+  left:50% !important;
+  top:50% !important;
+
+  width:min(70vw,1050px) !important;
+  height:min(61vh,570px) !important;
+
+  transform:translate(-50%,-50%) rotate(0deg) !important;
+
+  animation:keywordOrbitRotate 38s linear infinite !important;
+  transform-origin:50% 50% !important;
+  will-change:transform;
+}
+
+/* Keep each word upright while its POSITION circles the image */
+.hero-keywords .orbit-word{
+  animation:keywordOrbitCounterRotate 38s linear infinite !important;
+  transform-origin:center !important;
+  will-change:transform;
+}
+
+/* Irregular starting points around the image */
+.hero-keywords .orbit-word--1{
+  left:5% !important;
+  top:47% !important;
+}
+
+.hero-keywords .orbit-word--2{
+  left:15% !important;
+  top:12% !important;
+}
+
+.hero-keywords .orbit-word--3{
+  left:48% !important;
+  top:4% !important;
+}
+
+.hero-keywords .orbit-word--4{
+  right:5% !important;
+  top:18% !important;
+}
+
+.hero-keywords .orbit-word--5{
+  right:7% !important;
+  top:58% !important;
+}
+
+/* Whole field rotates clockwise */
+@keyframes keywordOrbitRotate{
+  from{
+    transform:translate(-50%,-50%) rotate(0deg);
+  }
+  to{
+    transform:translate(-50%,-50%) rotate(360deg);
+  }
+}
+
+/* Counter rotation prevents the text itself from turning upside down */
+@keyframes keywordOrbitCounterRotate{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(-360deg);
+  }
+}
+
+/* Keep the current smaller vertical project image */
+.cover-focus-viewer--orbit{
+  width:min(20vw,300px) !important;
+  min-width:240px !important;
+}
+
+/* Mobile */
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .hero-orbit.hero-keywords,
+  .hero-keywords .orbit-word{
+    animation:none !important;
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   FINAL KEYWORD MOTION — MARQUEE WRAP AROUND IMAGE
+   The words travel continuously around a rounded
+   rectangular path surrounding the center preview.
+═════════════════════════════════════════════ */
+
+.hero-orbit.hero-keywords{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+
+  width:min(54vw,820px) !important;
+  height:min(58vh,540px) !important;
+
+  transform:translate(-50%,-50%) !important;
+  animation:none !important;
+  overflow:visible !important;
+  pointer-events:none;
+}
+
+/* JS controls x/y positions; remove every previous orbit/floating animation */
+.hero-keywords .orbit-word,
+.hero-keywords .orbit-word--1,
+.hero-keywords .orbit-word--2,
+.hero-keywords .orbit-word--3,
+.hero-keywords .orbit-word--4,
+.hero-keywords .orbit-word--5{
+  position:absolute !important;
+  left:0 !important;
+  top:0 !important;
+  right:auto !important;
+  bottom:auto !important;
+
+  animation:none !important;
+  transform:translate3d(0,0,0);
+  will-change:transform;
+
+  font-size:clamp(17px,1.2vw,23px);
+  font-weight:450;
+}
+
+/* Current smaller vertical center image remains unchanged */
+.cover-focus-viewer--orbit{
+  width:min(20vw,300px) !important;
+  min-width:240px !important;
+  aspect-ratio:2 / 3 !important;
+}
+
+
+
+
+
+
+
+
+/* ═════════════════════════════════════════════
+   WORKS SECTION — BLACK / GREEN / WHITE
+═════════════════════════════════════════════ */
+
+/* Work Index section only */
+#work-index{
+  background:#111111 !important;
+  color:#FFFFFF !important;
+}
+
+/* Main WORKS / WORK INDEX heading */
+#work-index .work-index-title,
+#work-index .work-title,
+#work-index h1,
+#work-index h2{
+  color:#00FFA1 !important;
+}
+
+/* Everything else in the Works section */
+#work-index p,
+#work-index span,
+#work-index a,
+#work-index li,
+#work-index .work-item,
+#work-index .work-index-item,
+#work-index .work-index-num,
+#work-index .work-index-name,
+#work-index .work-index-meta{
+  color:#FFFFFF !important;
+}
+
+/* Keep lines/dividers visible on black */
+#work-index,
+#work-index *{
+  border-color:rgba(255,255,255,.18);
+}
+
+/* Hover can still use the portfolio accent */
+#work-index a:hover,
+#work-index .work-item:hover,
+#work-index .work-index-item:hover{
+  color:#00FFA1 !important;
+}
+
+
+/* ═════════════════════════════════════════════
+   ABOUT RIGHT — EDUCATION / EXPERIENCE / SKILLS
+   3 / 2 / 2 lines
+═════════════════════════════════════════════ */
+
+#about .about-info-list{
+  display:flex;
+  flex-direction:column;
+  padding-top:8px;
+}
+
+#about .about-info-group{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:32px;
+
+  padding:22px 0;
+
+  border-top:1px solid rgba(255,255,255,.10);
+}
+
+#about .about-info-group:last-child{
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+
+#about .about-info-title{
+  color:rgba(255,255,255,.88);
+
+  font-size:12px;
+  font-weight:500;
+  line-height:1.4;
+  letter-spacing:.02em;
+}
+
+#about .about-info-lines{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+#about .about-info-line{
+  color:rgba(255,255,255,.52);
+
+  font-size:11px;
+  font-weight:400;
+  line-height:1.45;
+  letter-spacing:.035em;
+}
+
+
+
+
+
+/* ═════════════════════════════════════════════
+   FINAL COLOR TWEAK
+   ABOUT = GREEN / BLACK + WHITE
+   PROJECT 05 = #F6F5F0
+═════════════════════════════════════════════ */
+
+/* PROJECT 05 */
+#p05-ov{
+  background:#111111 !important;
+  color:#fff !important;
+}
+
+#p05-ov .ov-project-title,
+#p05-ov .ov-big-num,
+#p05-ov .ov-meta-key,
+#p05-ov .ov-meta-val,
+#p05-ov .ov-desc-heading,
+#p05-ov .ov-desc-body,
+#p05-ov .ov-detail-num,
+#p05-ov .ov-detail-title,
+#p05-ov .ov-detail-desc,
+#p05-ov .eyebrow,
+#p05-ov .ov-kicker{
+  color:#fff !important;
+}
+
+#p05-ov .ov-meta-row,
+#p05-ov .ov-detail-card,
+#p05-ov .ov-kicker{
+  border-color:rgba(17,17,17,.16) !important;
+}
+
+
+#p05-ov .ov-detail-card:nth-child(1) .ov-detail-img{aspect-ratio:1920 / 3453;}
+
+/* ABOUT — full lime field */
+#about{
+  background:#00FFA1 !important;
+  color:#111111 !important;
+}
+
+/* Main information stays black for strong editorial contrast */
+#about .about-label,
+#about .about-title,
+#about .about-body,
+#about .about-info-title{
+  color:#111111 !important;
+}
+
+/* Secondary copy uses white selectively */
+#about .about-info-line{
+  color:#FFFFFF !important;
+}
+
+/* Keep some supporting/micro copy black */
+#about .about-meta,
+#about .about-small,
+#about .about-caption{
+  color:rgba(17,17,17,.72) !important;
+}
+
+/* White rules help divide the green field without making it too dark */
+#about .about-info-group{
+  border-top-color:rgba(255,255,255,.58) !important;
+}
+
+#about .about-info-group:last-child{
+  border-bottom-color:rgba(255,255,255,.58) !important;
+}
+
+/* Any generic About dividers */
+#about hr,
+#about .about-rule{
+  border-color:rgba(255,255,255,.58) !important;
+}
+
+/* Links: black by default, white on hover */
+#about a{
+  color:#111111 !important;
+}
+
+#about a:hover{
+  color:#FFFFFF !important;
+}
+
+
+/* ═════════════════════════════════════════════
+   ABOUT + FOOTER FINAL TYPOGRAPHY / COLOR TWEAK
+═════════════════════════════════════════════ */
+
+/* ABOUT
+   "Designing between disciplines" = black
+   English/body copy below = white
+*/
+#about .about-title{
+  color:#111111 !important;
+}
+
+#about .about-body{
+  color:#FFFFFF !important;
+}
+
+/* Education / Experience / Skills headings larger */
+#about .about-info-title{
+  color:#111111 !important;
+  font-size:clamp(16px,1.35vw,22px) !important;
+  font-weight:600 !important;
+  line-height:1.15 !important;
+  letter-spacing:-.025em !important;
+}
+
+/* Their detail text also slightly larger */
+#about .about-info-line{
+  color:#FFFFFF !important;
+  font-size:clamp(12px,.95vw,15px) !important;
+  line-height:1.5 !important;
+}
+
+/* Give the enlarged About information a little more breathing room */
+#about .about-info-group{
+  padding:26px 0 !important;
+}
+
+/* FOOTER — black field */
+footer,
+.footer{
+  background:#111111 !important;
+  color:#FFFFFF !important;
+}
+
+/* Default footer typography = white */
+footer *,
+.footer *{
+  color:#FFFFFF;
+  border-color:rgba(255,255,255,.16);
+}
+
+/* Studio + email = lime */
+footer .footer-studio,
+.footer .footer-studio,
+footer a[href^="mailto:"],
+.footer a[href^="mailto:"]{
+  color:#00FFA1 !important;
+}
+
+/* If "Studio" is the existing footer label/title */
+footer .footer-label,
+.footer .footer-label{
+  color:#00FFA1 !important;
+}
+
+/* Footer links stay white except email; hover can use lime */
+footer a:not([href^="mailto:"]),
+.footer a:not([href^="mailto:"]){
+  color:#FFFFFF !important;
+}
+
+footer a:not([href^="mailto:"]):hover,
+.footer a:not([href^="mailto:"]):hover{
+  color:#00FFA1 !important;
+}
+
+
+/* ═════════════════════════════════════════════
+   ABOUT — FORCE BLACK TEXT ON GREEN
+═════════════════════════════════════════════ */
+#about{
+  background:#00FFA1 !important;
+  color:#111111 !important;
+}
+
+/* Force every About text node to black first */
+#about,
+#about *{
+  color:#111111 !important;
+}
+
+/* Explicitly target the main statement */
+#about .about-title,
+#about .about-headline,
+#about .about-heading,
+#about h1,
+#about h2,
+#about h3{
+  color:#111111 !important;
+}
+
+/* Designing between disciplines + paragraph/body */
+#about .about-body,
+#about .about-copy,
+#about .about-desc,
+#about p{
+  color:#111111 !important;
+}
+
+/* Education / Experience / Skills */
+#about .about-info-title,
+#about .about-info-line{
+  color:#111111 !important;
+}
+
+/* Dividers remain subtle white for contrast */
+#about .about-info-group{
+  border-top-color:rgba(255,255,255,.58) !important;
+}
+#about .about-info-group:last-child{
+  border-bottom-color:rgba(255,255,255,.58) !important;
+}
+
+
+
+/* ═════════════════════════════════════════════
+   FINAL COVER TWEAK — POP KEYWORDS
+═════════════════════════════════════════════ */
+
+/* GNB */
+.editorial-nav .nav-items a,
+.editorial-nav .nav-utility{
+  font-size:14px !important;
+}
+
+/* Keep the keyword field fixed around the center preview — no orbit/marquee */
+.hero-orbit.hero-keywords{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  width:min(76vw,1180px) !important;
+  height:min(68vh,650px) !important;
+  transform:translate(-50%,-50%) !important;
+  animation:none !important;
+  pointer-events:none;
+  overflow:visible;
+}
+
+/* Every word starts hidden and pops in/out independently */
+.hero-keywords .orbit-word{
+  position:absolute !important;
+  opacity:0;
+  visibility:hidden;
+  animation:none !important;
+  transform:scale(.72) translateY(8px) !important;
+  filter:blur(4px);
+  will-change:opacity,transform,filter;
+}
+
+/* Irregular placement + deliberately different type sizes */
+.hero-keywords .orbit-word--1{
+  left:13% !important;
+  top:8% !important;
+  right:auto !important;
+  bottom:auto !important;
+  font-size:clamp(16px,1.25vw,22px) !important;
+}
+
+.hero-keywords .orbit-word--2{
+  right:2% !important;
+  top:22% !important;
+  left:auto !important;
+  bottom:auto !important;
+  font-size:clamp(21px,1.75vw,31px) !important;
+}
+
+.hero-keywords .orbit-word--3{
+  left:2% !important;
+  top:58% !important;
+  right:auto !important;
+  bottom:auto !important;
+  font-size:clamp(25px,2.15vw,38px) !important;
+}
+
+.hero-keywords .orbit-word--4{
+  right:16% !important;
+  top:70% !important;
+  left:auto !important;
+  bottom:auto !important;
+  font-size:clamp(15px,1.1vw,20px) !important;
+}
+
+.hero-keywords .orbit-word--5{
+  left:17% !important;
+  bottom:1% !important;
+  right:auto !important;
+  top:auto !important;
+  font-size:clamp(18px,1.45vw,26px) !important;
+}
+
+.hero-keywords .orbit-word span{
+  display:inline-block;
+  padding:4px 7px 5px;
+  color:#111111;
+  background:transparent;
+  font-weight:450;
+  transition:
+    background-color .28s cubic-bezier(.22,1,.36,1),
+    color .28s cubic-bezier(.22,1,.36,1),
+    font-weight .28s cubic-bezier(.22,1,.36,1);
+}
+
+/* Random active word keeps the green rectangular bar */
+.hero-keywords .orbit-word.is-active span{
+  background:#00FFA1 !important;
+  color:#FFFFFF !important;
+  font-weight:600 !important;
+}
+
+/* JS toggles this class for the pop appearance */
+.hero-keywords .orbit-word.is-pop-visible{
+  visibility:visible;
+  animation:keywordPopCycle var(--pop-duration, 3.8s)
+            cubic-bezier(.22,1,.36,1) 1 both !important;
+}
+
+@keyframes keywordPopCycle{
+  0%{
+    opacity:0;
+    transform:scale(.68) translateY(12px) !important;
+    filter:blur(5px);
+  }
+  15%{
+    opacity:1;
+    transform:scale(1.08) translateY(-2px) !important;
+    filter:blur(0);
+  }
+  25%{
+    opacity:1;
+    transform:scale(1) translateY(0) !important;
+    filter:blur(0);
+  }
+  70%{
+    opacity:1;
+    transform:scale(1) translateY(0) !important;
+    filter:blur(0);
+  }
+  100%{
+    opacity:0;
+    transform:scale(.88) translateY(-8px) !important;
+    filter:blur(3px);
+  }
+}
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+  .hero-keywords .orbit-word{
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:none !important;
+    filter:none !important;
+    animation:none !important;
+  }
+}
+
+
+/* ═════════════════════════════════════════════
+   HERO KEYWORDS — STRONGER POP + ACTIVE SCALE
+═════════════════════════════════════════════ */
+
+.hero-keywords .orbit-word{
+  transform-origin:center center;
+}
+
+/* Slightly more "popping out" on entry */
+@keyframes keywordPopCycle{
+  0%{
+    opacity:0;
+    transform:scale(.58) translateY(16px) !important;
+    filter:blur(6px);
+  }
+  12%{
+    opacity:1;
+    transform:scale(1.16) translateY(-4px) !important;
+    filter:blur(0);
+  }
+  22%{
+    opacity:1;
+    transform:scale(.98) translateY(1px) !important;
+    filter:blur(0);
+  }
+  30%{
+    opacity:1;
+    transform:scale(1.03) translateY(0) !important;
+    filter:blur(0);
+  }
+  72%{
+    opacity:1;
+    transform:scale(1) translateY(0) !important;
+    filter:blur(0);
+  }
+  100%{
+    opacity:0;
+    transform:scale(.82) translateY(-10px) !important;
+    filter:blur(3px);
+  }
+}
+
+/* Active green-bar word grows noticeably */
+.hero-keywords .orbit-word span{
+  transform-origin:center center;
+  transition:
+    background-color .30s cubic-bezier(.22,1,.36,1),
+    color .30s cubic-bezier(.22,1,.36,1),
+    font-weight .30s cubic-bezier(.22,1,.36,1),
+    transform .34s cubic-bezier(.16,1,.3,1),
+    letter-spacing .34s cubic-bezier(.16,1,.3,1);
+}
+
+.hero-keywords .orbit-word.is-active span{
+  background:#00FFA1 !important;
+  color:#FFFFFF !important;
+  font-weight:600 !important;
+  transform:scale(1.18) translateY(-1px) !important;
+  letter-spacing:-.045em;
+}
+
+
+/* CENTER PREVIEW — remove image counter / counter bar */
+.cover-focus-viewer--orbit .focus-count,
+.cover-focus-viewer--orbit .focus-counter,
+.cover-focus-viewer--orbit .slide-counter,
+.cover-focus-viewer--orbit .focus-index,
+.cover-focus-viewer--orbit .slide-index,
+.cover-focus-viewer--orbit .focus-pagination,
+.cover-focus-viewer--orbit .focus-progress,
+.cover-focus-viewer--orbit .slide-progress{
+  display:none !important;
+}
+
+
+
+/* GNB — unified 13px */
+.nav-items a,
+.nav-contact-label,
+.nav-contact-btn{
+  font-size:13px !important;
+}
+
+/* About / Work / Overview text-bar size */
+.nav-items a{
+  padding:4px 7px !important;
+}
+
+
+
+/* ═════════════════════════════════════════════
+   WORK INDEX — BANNER MARQUEE
+   original ratios:
+   01 = 1920 / 613
+   02 = 1920 / 580
+   03 = 1920 / 580
+═════════════════════════════════════════════ */
+
+#work-index{
+  padding-top:92px !important;
+  padding-bottom:92px !important;
+  overflow:hidden;
+}
+
+/* Less empty space under Works before the banners */
+#work-index .wi-header{
+  margin-bottom:34px !important;
+}
+
+/* Full-width moving strip */
+#work-index .wi-banner-marquee{
+  width:calc(100% + 80px);
+  margin-left:-40px;
+  margin-bottom:42px;
+  overflow:hidden;
+}
+
+/*
+  Banner height is intentionally larger than before,
+  while still staying subordinate to the Works list.
+*/
+#work-index .wi-banner-track{
+  --banner-h:clamp(116px,10.7vw,164px);
+  --banner-gap:26px;
+
+  display:flex;
+  align-items:center;
+  gap:var(--banner-gap);
+  width:max-content;
+  padding-left:40px;
+  padding-right:40px;
+  will-change:transform;
+
+  animation:worksBannerMarquee 32s linear infinite;
+}
+
+/* Pause only when the user intentionally hovers the strip */
+#work-index .wi-banner-marquee:hover .wi-banner-track{
+  animation-play-state:paused;
+}
+
+#work-index .wi-banner{
+  flex:none;
+  height:var(--banner-h);
+  overflow:hidden;
+  margin:0;
+  background:#1a1a1a;
+  border:0 !important;
+}
+
+/* Keep EACH source image's exact native aspect ratio */
+#work-index .wi-banner--01{
+  aspect-ratio:1920 / 613;
+}
+
+#work-index .wi-banner--02,
+#work-index .wi-banner--03{
+  aspect-ratio:1920 / 580;
+}
+
+#work-index .wi-banner img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+}
+
+/*
+  The first 3 banners + their gaps are duplicated once,
+  so moving half of the track produces a seamless loop.
+*/
+@keyframes worksBannerMarquee{
+  from{
+    transform:translate3d(0,0,0);
+  }
+  to{
+    transform:translate3d(calc(-50% - (var(--banner-gap) / 2)),0,0);
+  }
+}
+
+/* The list stays clean below the banner strip */
+#work-index .wi-row{
+  position:relative;
+}
+
+/* Tablet */
+
+
+
+/* Mobile */
+
+
+
+@media(prefers-reduced-motion:reduce){
+  #work-index .wi-banner-track{
+    animation:none !important;
+  }
+}
+
+
+
+/* WORKS BANNER — place directly under row 06 */
+#work-index .wi-banner-marquee{
+  margin-top:40px !important;
+  margin-bottom:0 !important;
+  border:0 !important;
+}
+
+#work-index .wi-row:last-of-type{
+  margin-bottom:0 !important;
+}
+
+
+
+
+
+
+/* ═════════════════════════════════════════════════════════════
+   RESPONSIVE SYSTEM — FINAL CLEAN
+   1920+ / 1600 / 1440 / 1280 / 1024 / TABLET / MOBILE
+   Existing design, text, section order, asset paths and JS are preserved.
+═════════════════════════════════════════════════════════════ */
+
+/* ── GLOBAL SAFETY ───────────────────────────────────────── */
+html,
+body{
+  width:100%;
+  max-width:none;
+  min-width:0;
+  overflow-x:hidden;
+}
+
+img,
+video{
+  max-width:100%;
+}
+
+/* ── GNB ─────────────────────────────────────────────────── */
+.editorial-nav{
+  width:100%;
+  padding-inline:clamp(12px,1.55vw,30px) !important;
+}
+
+.editorial-nav .nav-logo{
+  font-size:12px !important;
+}
+
+.editorial-nav .nav-items a,
+.editorial-nav .nav-utility,
+.editorial-nav .nav-contact-label,
+.editorial-nav .nav-contact-btn{
+  font-size:13px !important;
+}
+
+/* ── HERO / COVER ────────────────────────────────────────── */
+/*
+  The old file repeatedly used 145–190vh / 176vh hero heights and
+  several different 270–350px center-preview caps.
+  This makes the cover feel like one screen and removes excess blank scroll.
+*/
+#intro{
+  width:100%;
+  min-height:108svh !important;
+  height:auto !important;
+  padding:0 !important;
+}
+
+.intro-stage--orbit{
+  width:100% !important;
+  height:100svh !important;
+  min-height:620px !important;
+}
+
+/* Center image scales with viewport instead of stopping around 270–300px. */
+.cover-focus-viewer--orbit{
+  width:clamp(280px,19vw,370px) !important;
+  min-width:0 !important;
+  max-width:370px !important;
+  aspect-ratio:2 / 3 !important;
+  padding:clamp(7px,.6vw,11px) !important;
+}
+
+/* Keyword field stays visually tied to the center image on wide screens. */
+.hero-orbit.hero-keywords{
+  width:clamp(740px,59vw,1100px) !important;
+  height:clamp(480px,61vh,660px) !important;
+  max-width:calc(100vw - 72px) !important;
+}
+
+.orbit-hero-meta{
+  width:clamp(610px,51vw,880px) !important;
+  max-width:calc(100vw - 72px) !important;
+  bottom:30px !important;
+}
+
+.orbit-scroll-link{
+  bottom:24px !important;
+  white-space:nowrap;
+}
+
+/* ── PROJECT OVERVIEW ────────────────────────────────────── */
+.proj-overview{
+  width:100%;
+  padding:
+    clamp(88px,7vw,138px)
+    clamp(24px,3vw,56px) !important;
+}
+
+.ov-head{
+  margin-bottom:clamp(38px,3vw,54px);
+}
+
+.ov-title-marquee{
+  width:calc(100% + (clamp(24px,3vw,56px) * 2)) !important;
+  margin-left:calc(clamp(24px,3vw,56px) * -1) !important;
+}
+
+.ov-project-title{
+  font-size:clamp(58px,7.4vw,142px) !important;
+}
+
+.ov-layout{
+  width:100%;
+  max-width:1680px;
+  margin-inline:auto;
+  grid-template-columns:minmax(220px,.58fr) minmax(0,1.52fr) !important;
+  gap:clamp(42px,4.8vw,88px) !important;
+}
+
+.ov-content{
+  width:100%;
+  min-width:0;
+}
+
+.ov-main-video{
+  max-width:100%;
+}
+
+.ov-col-desc{
+  grid-template-columns:minmax(130px,.4fr) minmax(0,1.6fr) !important;
+  gap:clamp(28px,3.3vw,62px) !important;
+}
+
+.ov-desc-heading{
+  font-size:clamp(24px,2.15vw,38px) !important;
+}
+
+.ov-desc-body{
+  font-size:clamp(15px,.84vw,16px) !important;
+  max-width:760px;
+}
+
+.ov-detail-body{
+  width:min(100%,1180px) !important;
+  grid-template-columns:
+    clamp(48px,4vw,70px)
+    minmax(180px,.72fr)
+    minmax(260px,1.28fr) !important;
+  gap:clamp(18px,2.6vw,48px) !important;
+}
+
+.ov-detail-title{
+  font-size:clamp(17px,.96vw,18px) !important;
+}
+
+.ov-detail-desc{
+  font-size:clamp(15px,.84vw,16px) !important;
+}
+
+/* Project-specific full-width detail lists keep their intended edge-to-edge feel. */
+#p03-ov .ov-detail-list,
+#p04-ov .ov-detail-list,
+#p06-ov .ov-detail-list{
+  width:calc(100vw - (clamp(24px,3vw,56px) * 2)) !important;
+  margin-left:calc(
+    (100vw - (clamp(24px,3vw,56px) * 2) - 100%) / -2
+  ) !important;
+}
+
+/* Phone-format project media stay phone-format. */
+#p03-ov .ov-detail-card:nth-child(2) .ov-detail-img{
+  width:min(390px,32vw) !important;
+  min-width:260px !important;
+  margin-inline:auto !important;
+  aspect-ratio:390 / 844 !important;
+}
+
+/* Project 06 main video remains mobile-format by design. */
+#p06-ov .ov-main-video{
+  width:min(360px,100%) !important;
+  aspect-ratio:400 / 844 !important;
+  margin-inline:auto !important;
+}
+
+/* ── WORKS ───────────────────────────────────────────────── */
+#work-index{
+  width:100%;
+  padding:
+    clamp(76px,5.8vw,112px)
+    clamp(20px,3vw,56px) !important;
+}
+
+#work-index .wi-header{
+  margin-bottom:clamp(30px,2.4vw,44px) !important;
+}
+
+#work-index .wi-title{
+  font-size:clamp(38px,3vw,58px);
+}
+
+#work-index .wi-row{
+  grid-template-columns:
+    clamp(34px,3vw,52px)
+    minmax(0,1fr)
+    clamp(140px,13vw,220px)
+    clamp(54px,5vw,82px)
+    28px;
+  gap:clamp(12px,1.55vw,24px);
+  padding:clamp(16px,1.1vw,21px) 0;
+}
+
+#work-index .wi-name{
+  font-size:clamp(15px,1.12vw,21px);
+}
+
+/* Banner marquee: original ratios preserved exactly. */
+#work-index .wi-banner-marquee{
+  width:calc(100% + (clamp(20px,3vw,56px) * 2));
+  margin-left:calc(clamp(20px,3vw,56px) * -1);
+  margin-top:clamp(30px,2.3vw,44px) !important;
+}
+
+#work-index .wi-banner-track{
+  --banner-h:clamp(104px,8.4vw,164px) !important;
+  --banner-gap:clamp(12px,1.3vw,25px) !important;
+  padding-inline:0 !important;
+}
+
+#work-index .wi-banner{
+  flex:0 0 auto !important;
+  height:var(--banner-h) !important;
+  width:auto !important;
+  min-width:0 !important;
+}
+
+#work-index .wi-banner--01{
+  aspect-ratio:1920 / 613 !important;
+}
+
+#work-index .wi-banner--02,
+#work-index .wi-banner--03{
+  aspect-ratio:1920 / 580 !important;
+}
+
+#work-index .wi-banner img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+}
+
+/* ── ABOUT ───────────────────────────────────────────────── */
+#about{
+  width:100%;
+  padding:
+    clamp(88px,6.8vw,130px)
+    clamp(24px,3vw,56px) !important;
+}
+
+#about .about-grid{
+  width:min(100%,1680px);
+  margin-inline:auto;
+  grid-template-columns:minmax(320px,.9fr) minmax(0,1.1fr);
+  gap:clamp(48px,5.8vw,106px) !important;
+}
+
+#about .about-heading,
+#about .about-title{
+  font-size:clamp(34px,3.3vw,62px);
+}
+
+#about .about-info-group{
+  grid-template-columns:clamp(120px,10vw,170px) minmax(0,1fr) !important;
+  gap:clamp(18px,2vw,34px) !important;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer{
+  width:100%;
+  padding:
+    clamp(46px,3.8vw,70px)
+    clamp(24px,3vw,56px)
+    clamp(30px,2.4vw,46px) !important;
+  gap:clamp(24px,3vw,50px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1920+
+═══════════════════════════════════════════════════════════ */
+@media (min-width:1920px){
+  .cover-focus-viewer--orbit{
+    width:370px !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:1100px !important;
+    height:min(660px,61vh) !important;
+  }
+
+  .orbit-hero-meta{
+    width:880px !important;
+  }
+
+  .ov-layout{
+    max-width:1680px;
+  }
+
+  #work-index .wi-banner-track{
+    --banner-h:164px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1600–1919
+═══════════════════════════════════════════════════════════ */
+@media (min-width:1600px) and (max-width:1919px){
+  .cover-focus-viewer--orbit{
+    width:clamp(320px,19vw,355px) !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:min(63vw,1040px) !important;
+  }
+
+  .ov-layout{
+    max-width:1500px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1440–1599
+═══════════════════════════════════════════════════════════ */
+@media (min-width:1440px) and (max-width:1599px){
+  .cover-focus-viewer--orbit{
+    width:clamp(292px,19vw,320px) !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:min(65vw,970px) !important;
+    height:min(60vh,610px) !important;
+  }
+
+  .ov-layout{
+    max-width:1360px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1280–1439
+═══════════════════════════════════════════════════════════ */
+@media (min-width:1280px) and (max-width:1439px){
+  #intro{
+    min-height:106svh !important;
+  }
+
+  .cover-focus-viewer--orbit{
+    width:clamp(274px,20vw,300px) !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:min(69vw,900px) !important;
+    height:min(59vh,575px) !important;
+  }
+
+  .orbit-hero-meta{
+    width:min(67vw,750px) !important;
+    bottom:26px !important;
+  }
+
+  .orbit-scroll-link{
+    bottom:20px !important;
+  }
+
+  .ov-layout{
+    grid-template-columns:minmax(190px,.5fr) minmax(0,1.5fr) !important;
+    gap:48px !important;
+  }
+
+  .ov-project-title{
+    font-size:clamp(62px,7vw,100px) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1024–1279
+═══════════════════════════════════════════════════════════ */
+@media (min-width:1024px) and (max-width:1279px){
+  #intro{
+    min-height:106svh !important;
+  }
+
+  .cover-focus-viewer--orbit{
+    width:clamp(258px,23vw,284px) !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:78vw !important;
+    height:min(57vh,540px) !important;
+  }
+
+  .orbit-hero-meta{
+    width:72vw !important;
+  }
+
+  .ov-layout{
+    grid-template-columns:180px minmax(0,1fr) !important;
+    gap:40px !important;
+  }
+
+  .ov-col-desc{
+    grid-template-columns:120px minmax(0,1fr) !important;
+    gap:30px !important;
+  }
+
+  #about .about-grid{
+    gap:48px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TABLET 768–1023
+═══════════════════════════════════════════════════════════ */
+@media (min-width:768px) and (max-width:1023px){
+  #intro{
+    min-height:105svh !important;
+  }
+
+  .editorial-nav{
+    padding-inline:16px !important;
+  }
+
+  .cover-focus-viewer--orbit{
+    width:clamp(245px,34vw,292px) !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:90vw !important;
+    height:55vh !important;
+  }
+
+  .orbit-hero-meta{
+    width:84vw !important;
+  }
+
+  .ov-layout{
+    grid-template-columns:1fr !important;
+  }
+
+  .ov-col-num{
+    position:static !important;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:26px;
+    align-items:start;
+  }
+
+  .ov-big-num{
+    margin:0 !important;
+  }
+
+  .ov-col-desc{
+    grid-template-columns:1fr !important;
+  }
+
+  .ov-desc-body{
+    grid-column:auto !important;
+  }
+
+  .ov-detail-body{
+    grid-template-columns:52px minmax(0,1fr) !important;
+  }
+
+  .ov-detail-desc{
+    grid-column:2 !important;
+  }
+
+  #p03-ov .ov-detail-card:nth-child(2) .ov-detail-img{
+    width:min(390px,74vw) !important;
+    min-width:0 !important;
+  }
+
+  #work-index .wi-row{
+    grid-template-columns:40px minmax(0,1fr) 130px 60px 22px;
+    gap:14px;
+  }
+
+  #about .about-grid{
+    grid-template-columns:1fr !important;
+    gap:48px !important;
+  }
+
+  footer{
+    grid-template-columns:1fr 1fr !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE <=767
+═══════════════════════════════════════════════════════════ */
+@media (max-width:767px){
+  #intro{
+    min-height:103svh !important;
+  }
+
+  .intro-stage--orbit{
+    min-height:560px !important;
+  }
+
+  .editorial-nav{
+    padding-inline:10px !important;
+  }
+
+  .editorial-nav .nav-items{
+    gap:3px !important;
+  }
+
+  .editorial-nav .nav-items a,
+  .editorial-nav .nav-utility{
+    font-size:11px !important;
+    padding:4px 5px !important;
+  }
+
+  .cover-focus-viewer--orbit{
+    width:clamp(208px,54vw,274px) !important;
+    padding:7px !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:94vw !important;
+    height:51vh !important;
+  }
+
+  .hero-keywords .orbit-word--1{left:5% !important;top:7% !important;}
+  .hero-keywords .orbit-word--2{right:1% !important;top:22% !important;}
+  .hero-keywords .orbit-word--3{left:0 !important;top:60% !important;}
+  .hero-keywords .orbit-word--4{right:5% !important;top:74% !important;}
+  .hero-keywords .orbit-word--5{left:8% !important;bottom:1% !important;}
+
+  .orbit-hero-meta{
+    width:88vw !important;
+    bottom:42px !important;
+    font-size:8px !important;
+  }
+
+  .orbit-scroll-link{
+    bottom:16px !important;
+  }
+
+  .proj-overview{
+    padding:72px 20px !important;
+  }
+
+  .ov-title-marquee{
+    width:calc(100% + 40px) !important;
+    margin-left:-20px !important;
+  }
+
+  .ov-project-title{
+    font-size:clamp(48px,16vw,90px) !important;
+  }
+
+  .ov-layout{
+    grid-template-columns:1fr !important;
+  }
+
+  .ov-col-num{
+    position:static !important;
+    display:block;
+  }
+
+  .ov-meta-row{
+    grid-template-columns:72px minmax(0,1fr);
+  }
+
+  .ov-col-desc{
+    grid-template-columns:1fr !important;
+    gap:20px !important;
+  }
+
+  .ov-desc-body{
+    grid-column:auto !important;
+    font-size:15px !important;
+  }
+
+  .ov-detail-body{
+    grid-template-columns:40px minmax(0,1fr) !important;
+    gap:12px 16px !important;
+  }
+
+  .ov-detail-desc{
+    grid-column:2 !important;
+    font-size:15px !important;
+  }
+
+  #p03-ov .ov-detail-list,
+  #p04-ov .ov-detail-list,
+  #p06-ov .ov-detail-list{
+    width:calc(100vw - 40px) !important;
+    margin-left:calc((100vw - 40px - 100%) / -2) !important;
+  }
+
+  #p03-ov .ov-detail-card:nth-child(2) .ov-detail-img{
+    width:min(390px,82vw) !important;
+    min-width:0 !important;
+  }
+
+  #work-index{
+    padding:66px 20px !important;
+  }
+
+  #work-index .wi-row{
+    grid-template-columns:32px minmax(0,1fr) 20px !important;
+    gap:10px !important;
+    padding:16px 0 !important;
+  }
+
+  #work-index .wi-type,
+  #work-index .wi-year{
+    display:none !important;
+  }
+
+  #work-index .wi-arrow{
+    display:block !important;
+  }
+
+  #work-index .wi-banner-marquee{
+    width:calc(100% + 40px);
+    margin-left:-20px;
+  }
+
+  #work-index .wi-banner-track{
+    --banner-h:82px !important;
+    --banner-gap:12px !important;
+  }
+
+  #about{
+    padding:74px 20px !important;
+  }
+
+  #about .about-grid{
+    grid-template-columns:1fr !important;
+    gap:42px !important;
+  }
+
+  #about .about-info-group{
+    grid-template-columns:1fr !important;
+    gap:9px !important;
+    padding:18px 0 !important;
+  }
+
+  footer{
+    grid-template-columns:1fr !important;
+    padding:40px 20px 28px !important;
+  }
+
+  .ft-right{
+    text-align:left !important;
+  }
+}
+
+@media (max-width:480px){
+  .cover-focus-viewer--orbit{
+    width:clamp(198px,62vw,246px) !important;
+  }
+
+  .hero-orbit.hero-keywords{
+    width:96vw !important;
+    height:47vh !important;
+  }
+
+  .orbit-hero-meta{
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    text-align:center;
+  }
+
+  .ov-project-title{
+    font-size:16vw !important;
+  }
+
+  .wi-name{
+    font-size:14px !important;
+  }
+}
+</style>
+</head>
+<body >
+
+
+
+<!-- NAV -->
+<nav class="editorial-nav">
+  <a class="nav-logo" href="#intro">Portfolio</a>
+
+  <ul class="nav-items">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work-index">Work</a></li>
+    <a class="nav-utility" href="#about">Contact</a>
+  </ul>
+
+  <div class="nav-contact">
+    <a class="nav-utility" href="mailto:yl236@naver.com">Email</a>
+  </div>
+</nav>
+
+<!-- INTRO -->
+<section id="intro">
+  <div class="intro-stage intro-stage--orbit">
+
+    <!-- Slowly rotating, intentionally irregular capability words -->
+    <div class="hero-orbit hero-keywords" aria-hidden="true">
+      <div class="orbit-word orbit-word--1"><span>UI / UX</span></div>
+      <div class="orbit-word orbit-word--2"><span>INTERACTION</span></div>
+      <div class="orbit-word orbit-word--3"><span>VISUAL</span></div>
+      <div class="orbit-word orbit-word--4"><span>WEB</span></div>
+      <div class="orbit-word orbit-word--5"><span>IMPLEMENTATION</span></div>
+    </div>
+
+    <!-- Center project preview -->
+    <div class="cover-focus-viewer cover-focus-viewer--orbit"
+         tabindex="0"
+         role="button"
+         aria-label="Selected project previews. Click to view the next project image.">
+
+      <div class="focus-corner focus-corner--tl"></div>
+      <div class="focus-corner focus-corner--tr"></div>
+      <div class="focus-corner focus-corner--bl"></div>
+      <div class="focus-corner focus-corner--br"></div>
+
+      <div class="focus-cross" aria-hidden="true">
+        <span></span><span></span>
+      </div>
+
+      <div class="focus-slides">
+        <figure class="focus-slide is-active">
+          <img src="./images/6-5.png" alt="Project 01 preview">
+        </figure>
+        <figure class="focus-slide">
+          <img src="./images/33-1.png" alt="Project 02 preview">
+        </figure>
+        <figure class="focus-slide">
+          <img src="./images/3-3.png" alt="Project 03 preview">
+        </figure>
+        <figure class="focus-slide">
+          <img src="./images/1-6.png" alt="Project 04 preview">
+        </figure>
+        <figure class="focus-slide">
+          <img src="./images/5-3.png" alt="Project 04 preview">
+        </figure>
+        <figure class="focus-slide">
+          <img src="./images/6-6.png"
+               alt="Project 05 preview"
+               onerror="this.onerror=null;this.src='/images/banner-03.jpg';">
+        </figure>
+      </div>
+    </div>
+
+    <div class="orbit-hero-meta">
+      <span>Available for
+New Projects</span>
+      <span>WEB · UI/UX · Interaction</span>
+    </div>
+
+    <a class="orbit-scroll-link" href="#work-index">
+      <span>Scroll</span>
+      <b>↓</b>
+    </a>
+
+  </div>
+</section>
+
+<!-- WORK INDEX -->
+<section id="work-index">
+  <div class="wi-header">
+    <h2 class="wi-title rev">Works</h2>
+    <span class="wi-count rev">06 Projects</span>
+  </div>
+<a href="#p04-ov" class="wi-row rev"><span class="wi-num">01</span><span class="wi-name">치과 Web UI Design</span><span class="wi-type">UI Design</span><span class="wi-year">2025</span><span class="wi-arrow">→</span></a>
+  <a href="#p02-ov" class="wi-row rev"><span class="wi-num">02</span><span class="wi-name">MIHAK Web Design</span><span class="wi-type">Interaction Design</span><span class="wi-year">2026</span><span class="wi-arrow">→</span></a>
+  <a href="#p03-ov" class="wi-row rev"><span class="wi-num">03</span><span class="wi-name">I CAN NOTE Web Design</span><span class="wi-type">Web Design</span><span class="wi-year">2025</span><span class="wi-arrow">→</span></a>
+  <a href="#p01-ov" class="wi-row rev"><span class="wi-num">04</span><span class="wi-name">Huxley Interactive Web Design</span><span class="wi-type">Interaction Design</span><span class="wi-year">2026</span><span class="wi-arrow">→</span></a>
+  <a href="#p05-ov" class="wi-row rev"><span class="wi-num">05</span><span class="wi-name">한식 레스토랑 오늘</span><span class="wi-type">UI/UX Design</span><span class="wi-year">2025</span><span class="wi-arrow">→</span></a>
+  <a href="#p06-ov" class="wi-row rev"><span class="wi-num">06</span><span class="wi-name">AI가 만드는 코스 App</span><span class="wi-type">UI/UX Design</span><span class="wi-year">2025</span><span class="wi-arrow">→</span></a>
+
+  <!-- WORKS BANNER MARQUEE -->
+  <div class="wi-banner-marquee rev" aria-label="Selected banner design">
+    <div class="wi-banner-track">
+
+      <figure class="wi-banner wi-banner--01">
+        <img src="./images/banner1.png" alt="Banner design 01">
+      </figure>
+
+      <figure class="wi-banner wi-banner--02">
+        <img src="./images/banner2.png" alt="Banner design 02">
+      </figure>
+
+      <figure class="wi-banner wi-banner--03">
+        <img src="./images/banner3.png" alt="Banner design 03">
+      </figure>
+
+      <!-- seamless loop duplicate -->
+      <figure class="wi-banner wi-banner--01" aria-hidden="true">
+        <img src="./images/banner1.png" alt="">
+      </figure>
+
+      <figure class="wi-banner wi-banner--02" aria-hidden="true">
+        <img src="./images/banner2.png" alt="">
+      </figure>
+
+      <figure class="wi-banner wi-banner--03" aria-hidden="true">
+        <img src="./images/banner3.png" alt="">
+      </figure>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══ PROJECT 03 ═══ -->
+<section class="proj-overview" id="p04-ov" style="background:var(--bg-lift)">
+  <div class="ov-head">
+    <div class="ov-kicker rev"><span>Article 01</span><span>Project Overview / 2025—2026</span></div>
+    <div class="ov-title-marquee rev" aria-label="Motion — Brand Campaign"><div class="ov-title-track"><h2 class="ov-project-title">치과병원</h2><h2 class="ov-project-title" aria-hidden="true">아이부터 어른까지</h2></div></div>
+  </div>
+  <div class="ov-layout">
+    <div class="ov-col-num">
+      <div class="ov-big-num rev-num">01</div>
+      <div class="ov-meta-block">
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Role</div><div class="ov-meta-val">Web Design<br />UI Design<br />Information Design</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Tools</div><div class="ov-meta-val">Figma<br />Photoshop<br />ChatGPT 이미지 생성</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Duration</div><div class="ov-meta-val">2025 · 8days</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Independent Project</div><div class="ov-meta-val">Dental Clinic<br />광교호수구강내과소아과</div></div>
+      </div>
+</div>
+    <div class="ov-content">
+      <div>
+        <div class="ov-main-video rev-s" tabindex="0" role="button" aria-label="Motion — Brand Campaign 영상 재생 또는 일시정지">
+          <video muted playsinline preload="metadata">
+            <source src="./videos/project-4.mp4" type="video/mp4">
+          </video>
+          <span class="ov-video-view"><span class="ov-video-view-text">View</span></span>
+          <span class="ov-video-status">Click to play</span>
+        </div>
+        <div class="ov-video-help"><span>16:9 · 1920 × 1080</span><span>Scroll pauses video</span></div>
+      </div>
+      <div class="ov-col-desc">
+        <div class="ov-section-label rev"><div class="eyebrow">Overview</div></div>
+        <h2 class="ov-desc-heading rev">광교호수구강내과소아과</h2>
+        <p class="ov-desc-body rev">구강내과·소아치과·교정클리닉을 함께 운영하는 치과의 특성을 고려해, 각 진료 분야의 전문성과 신뢰감을 일관된 흐름으로 전달하는 웹사이트를 디자인했습니다. Homepage를 중심으로 턱관절 치료, 소아·청소년 클리닉, 교정 클리닉까지 주요 진료 페이지를 구성해 필요한 정보를 쉽게 탐색할 수 있도록 했습니다.</p>
+      </div>
+      <div class="ov-detail-list">
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/4-1.png" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">01</div><h3 class="ov-detail-title">Homepage — Expertise to Trust</h3><p class="ov-detail-desc">첫 화면에서는 의료진의 전문성을 강조하고, 소아치과 영역에서는 아이와 보호자가 느낄 수 있는 안심과 신뢰로 분위기를 전환했습니다. Special Point에서는 구강내과 전문 진료·교정과 협진·소아 중심 진료 환경을 한눈에 보여주고, Location에는 광교호수공원 이미지를 활용해 병원의 지역적 정체성을 자연스럽게 연결했습니다.</p></div></article>
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/4-2.png" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">02</div><h3 class="ov-detail-title">TMJ Treatment</h3><p class="ov-detail-desc">턱관절의 주요 증상은 이미지와 아이콘을 활용해 한눈에 파악할 수 있도록 구성했습니다. 기존에 텍스트 중심으로 나열되어 있던 원인과 증상을 기능장애와 통증을 중심으로 분류하고 관련 이미지를 함께 배치해 전문적인 진료 정보를 보다 쉽게 이해할 수 있도록 정리했습니다.</p></div></article>
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/4-3.png" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">03</div><h3 class="ov-detail-title">Pediatric Clinic</h3><p class="ov-detail-desc">보호자가 우선적으로 확인할 구강검진 정보를 앞에 배치하고, 기존 진료과목은 Care Program으로 재구성해 아이의 성장 과정에 맞춘 진료라는 인상을 전달했습니다. 진료 항목은 성장·예방 진료와 특수·외상 진료로 구분하고, 따뜻한 이미지와 예방·보존 치료 원칙을 함께 배치해 소아치과의 세심하고 신뢰감 있는 이미지를 이어갔습니다.</p></div></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECT 05 ═══ -->
+<section class="proj-overview" id="p02-ov" style="background:var(--bg-lift)">
+  <div class="ov-head">
+    <div class="ov-kicker rev"><span>Article 02</span><span>Project Overview / 2025—2026</span></div>
+    <div class="ov-title-marquee rev" aria-label="Huxley — Brand Story Web"><div class="ov-title-track"><h2 class="ov-project-title">MIHAK</h2><h2 class="ov-project-title" aria-hidden="true">Invisible Suit — Perfumed Life Manner</h2></div></div>
+  </div>
+  <div class="ov-layout">
+    <div class="ov-col-num">
+      <div class="ov-big-num rev-num">02</div>
+      <div class="ov-meta-block">
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Role</div><div class="ov-meta-val">Web Design<br />Interaction Design<br />Visual Design</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Tools</div><div class="ov-meta-val">Figma<br />Photoshop<br />HTML · CSS · JavaScript<br />ChatGPT 웹 구현 보조 · 이미지 생성<br />Midjourney</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Duration</div><div class="ov-meta-val">2026· 2 weeks</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Independent Project</div><div class="ov-meta-val">MIHAK</div></div>
+      </div>
+</div>
+    <div class="ov-content">
+      <div>
+        <div class="ov-main-video rev-s" tabindex="0" role="button" aria-label="Huxley — Brand Story Web 영상 재생 또는 일시정지">
+          <video muted playsinline preload="metadata">
+            <source src="./videos/project-2.mp4" type="video/mp4">
+          </video>
+          <span class="ov-video-view"><span class="ov-video-view-text">View</span></span>
+          <span class="ov-video-status">Click to play</span>
+        </div>
+        <div class="ov-video-help"><span>16:9 · 1920 × 1080</span><span>Scroll pauses video</span></div>
+      </div>
+      <div class="ov-col-desc">
+        <div class="ov-section-label rev"><div class="eyebrow">Overview</div></div>
+        <h2 class="ov-desc-heading rev">‘Invisible Suit’ to ‘Perfumed Life Manner’</h2>
+        <p class="ov-desc-body rev">브랜드 미학의 ‘Invisible Suit’와 ‘Perfumed Life Manner’를 연결해 브랜드 아이덴티티에서 제품 경험으로 이어지는 웹사이트로 재구성했습니다. 기존 비주얼의 조개와 진주 모티브를 절제된 방식으로 재해석하고, 보이지 않는 향과 잔향의 감각을 이미지 전환과 스크롤 인터랙션으로 표현했습니다.
+      </div>
+      <div class="ov-detail-list">
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/2-1.png" alt=""></div><div class="ov-detail-body"><div class="ov-detail-num">01</div><h3 class="ov-detail-title">Homepage - Brand Identity</h3><p class="ov-detail-desc">기존 히어로에서 직접적으로 표현되던 조개와 진주를 화이트 공간과 오브제 중심의 비주얼로 재구성해 절제되고 고급스러운 브랜드 이미지를 강조했습니다. ‘Invisible Suit’에서 ‘Perfumed Life Manner’로 이어지는 메시지와 비주얼을 연결해 브랜드의 정체성이 자연스럽게 전달되도록 구성했습니다.</p></div></article>
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/2-2.png" alt=""></div><div class="ov-detail-body"><div class="ov-detail-num">02</div><h3 class="ov-detail-title">Product Detail- Eau de Noir Perfume Stick</h3><p class="ov-detail-desc">‘진주를 재해석한 뷰티 오브제’라는 제품 특성에 집중해, 진주와 향의 확산을 연상시키는 이미지를 페이지 전반에 활용했습니다. 제품과 향 자체에 시선이 집중되도록 불필요한 요소를 덜어내고, 향을 바르는 동작과 이미지 전환을 통해 제품 사용에서 느껴지는 감각을 시각적으로 표현했습니다.</p></div></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECT 02 ═══ -->
+<section class="proj-overview" id="p03-ov">
+  <div class="ov-head">
+    <div class="ov-kicker rev"><span>Article 03</span><span>Project Overview / 2025—2026</span></div>
+    <div class="ov-title-marquee rev" aria-label="MIHAK — Brand Web Design"><div class="ov-title-track"><h2 class="ov-project-title">I CAN NOTE</h2><h2 class="ov-project-title" aria-hidden="true">디지털 필기앱</h2></div></div>
+  </div>
+  <div class="ov-layout">
+    <div class="ov-col-num">
+      <div class="ov-big-num rev-num">03</div>
+      <div class="ov-meta-block">
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Role</div><div class="ov-meta-val">웹 기획<br />사용사례 UI Design<br /></div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Tools</div><div class="ov-meta-val">Figma<br />Photoshop<br />HTML · CSS · JavaScript<br />ChatGPT 웹 구현 보조 · 이미지 생성</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Duration</div><div class="ov-meta-val">2025 · 4 Weeks</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Team Project</div><div class="ov-meta-val">I CAN NOTE<br />· 3 Members · 웹 기획, 사용사례</div></div>
+      </div>
+</div>
+    <div class="ov-content">
+      <div>
+        <div class="ov-main-video rev-s" tabindex="0" role="button" aria-label="MIHAK — Brand Web Design 영상 재생 또는 일시정지">
+          <video muted playsinline preload="metadata">
+            <source src="./videos/project-3.mp4" type="video/mp4">
+          </video>
+          <span class="ov-video-view"><span class="ov-video-view-text">View</span></span>
+          <span class="ov-video-status">Click to play</span>
+        </div>
+        <div class="ov-video-help"><span>16:9 · 1920 × 1080</span><span>Scroll pauses video</span></div>
+      </div>
+      <div class="ov-col-desc">
+        <div class="ov-section-label rev"><div class="eyebrow">Overview</div></div>
+        <h2 class="ov-desc-heading rev">디지털 필기 앱 'I CAN NOTE'</h2>
+        <p class="ov-desc-body rev">PDF·PPT·HWP·이미지 등의 문서 위에 직접 필기하고 강의 영상을 녹화할 수 있는 판서 프로그램 ICANNOTE의 웹사이트를 리디자인한 팀 프로젝트입니다. 실제 서비스의 웹디자인 요청을 바탕으로, 주요 사용자인 40–50대 교육 강사가 서비스를 쉽게 이해하고 필요한 정보를 편하게 탐색할 수 있는 웹사이트를 목표로 했습니다.
+
+의뢰자의 요청과 기존 서비스의 특성을 반영해 전체 톤앤매너를 조율하고, 명확한 대비와 친근한 인상을 고려해 오렌지를 메인 컬러로 제안했습니다. 기존 2D 연필 심볼은 3D 오브제로 확장해 ‘디지털 필기’라는 서비스의 특징을 직관적으로 표현하고, 서비스 소개부터 활용 사례와 FAQ까지 주요 정보를 쉽게 탐색할 수 있도록 구성했습니다.</p>
+      </div>
+      <div class="ov-detail-list">
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/3-1.png" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">01</div><h3 class="ov-detail-title">My Part</h3><p class="ov-detail-desc">제가 디자인과 퍼블리싱을 담당한 사용사례 페이지는 많은 영상 콘텐츠를 보다 편하게 탐색할 수 있도록 구조를 개선하는 데 집중했습니다. 기존에는 영상이 한 방향으로 길게 나열되어 있었지만, 이를 두 줄로 나누어 엇갈리게 배치하고 좌우로 탐색할 수 있도록 구성했습니다.
+
+또한 구버전 프로그램을 기준으로 연결되어 있던 사용 안내 영상을 최신 버전으로 교체해, 현재 서비스와 웹사이트에서 제공하는 콘텐츠가 일치하도록 정리했습니다.
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECT 04 ═══ -->
+<section class="proj-overview" id="p01-ov">
+  <div class="ov-head">
+    <div class="ov-kicker rev"><span>Article 04</span><span>Project Overview / 2025—2026</span></div>
+    <div class="ov-title-marquee rev" aria-label="Huxley — Brand Web Design"><div class="ov-title-track"><h2 class="ov-project-title">Huxley</h2><h2 class="ov-project-title" aria-hidden="true">Great Things Never Came From Comfort Zones</h2></div></div>
+  </div>
+  <div class="ov-layout">
+    <div class="ov-col-num">
+      <div class="ov-big-num rev-num">04</div>
+      <div class="ov-meta-block">
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Role</div><div class="ov-meta-val">Web Design<br />Interaction Design<br />Content Design</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Tools</div><div class="ov-meta-val">Figma<br />Photoshop<br />HTML · CSS · JavaScript<br/>ChatGPT 웹 구현 보조 · 이미지 생성</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Duration</div><div class="ov-meta-val">2026 · 2 weeks</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Independent Project</div><div class="ov-meta-val">Huxley</div></div>
+      </div>
+</div>
+    <div class="ov-content">
+      <div>
+        <div class="ov-main-video rev-s" tabindex="0" role="button" aria-label="Huxley — Brand Web Design 영상 재생 또는 일시정지">
+          <video muted playsinline preload="metadata">
+            <source src="./videos/project-1.mp4" type="video/mp4">
+          </video>
+          <span class="ov-video-view"><span class="ov-video-view-text">View</span></span>
+          <span class="ov-video-status">Click to play</span>
+        </div>
+        <div class="ov-video-help"><span>16:9 · 1920 × 1080</span><span>Scroll pauses video</span></div>
+      </div>
+      <div class="ov-col-desc">
+        <div class="ov-section-label rev"><div class="eyebrow">Overview</div></div>
+        <h2 class="ov-desc-heading rev">정보의 홍수 속, 진실을 찾기 어려운 시대</h2>
+        <p class="ov-desc-body rev">헉슬리의 브랜드 철학을 중심으로, 제품보다 브랜드의 정체성을 먼저 경험하는 웹사이트로 재해석했습니다. 기존 Homepage가 프로모션과 제품 탐색, Brand Story가 10주년과 연도별 성과 전달에 집중했다면, 이를 헉슬리의 철학을 중심으로 하나의 흐름으로 연결했습니다. Homepage에서는 브랜드 메시지에서 제품 탐색으로, Brand Story에서는 브랜드의 탄생 배경에서 지난 10년의 기록과 현재로 이어지도록 구성했습니다.
+      </div>
+      <div class="ov-detail-list">
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/1-2.gif" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">01</div><h3 class="ov-detail-title">
+          Homepage — Philosophy to Product
+        </h3><p class="ov-detail-desc">슬로건과 여백으로 시작해 브랜드 메시지를 먼저 인식하도록 하고, 스크롤에 따라 사막의 비주얼을 점진적으로 드러내며 헉슬리의 세계관으로 확장했습니다. 이후 ‘Great Things / Comfort Zones’를 ‘New / Best Seller’로 연결해, 브랜드에 대한 인상이 자연스럽게 제품 탐색으로 이어지도록 구성했습니다.</p></div></article>
+  </div>
+  <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/1-4.gif" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">02</div><h3 class="ov-detail-title">Brand Story — Origin to Journey
+</h3><p class="ov-detail-desc">‘정보 과잉 속에서 본질을 추구한다’는 브랜드의 출발점에서 제품, 축적된 시간, 현재로 이어지는 흐름을 구성했습니다. 개별 수상과 랭킹을 나열하기보다 지난 10년의 주요 기록을 압축해, 성과 자체보다 헉슬리가 지속해온 방향과 브랜드의 흐름에 집중했습니다.</p></div></article>
+<article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/1-4.png" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num"></div><h3 class="ov-detail-title"></h3><p class="ov-detail-desc"></p></div></article>
+</section>
+
+<!-- ═══ PROJECT 02 ═══ -->
+<section class="proj-overview" id="p05-ov">
+  <div class="ov-head">
+    <div class="ov-kicker rev"><span>Article 05</span><span>Project Overview / 2025—2026</span></div>
+    <div class="ov-title-marquee rev" aria-label="MIHAK — Brand Web Design"><div class="ov-title-track"><h2 class="ov-project-title">Restaurant —  Oneul</h2><h2 class="ov-project-title" aria-hidden="true">Oneul's value</h2></div></div>
+  </div>
+  <div class="ov-layout">
+    <div class="ov-col-num">
+      <div class="ov-big-num rev-num">05</div>
+      <div class="ov-meta-block">
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Role</div><div class="ov-meta-val">Web Design<br />Visual Design<br />Content Design</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Tools</div><div class="ov-meta-val">Figma<br />Photoshop<br />HTML · CSS · JavaScript<br />ChatGPT 웹 구현 보조</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Duration</div><div class="ov-meta-val">2025 · 5days</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Independent Project</div><div class="ov-meta-val">Restaurant<br />Oneul</div></div>
+      </div>
+</div>
+    <div class="ov-content">
+      <div>
+        <div class="ov-main-video rev-s" tabindex="0" role="button" aria-label="MIHAK — Brand Web Design 영상 재생 또는 일시정지">
+          <video muted playsinline preload="metadata">
+            <source src="./videos/project-5.mp4" type="video/mp4">
+          </video>
+          <span class="ov-video-view"><span class="ov-video-view-text">View</span></span>
+          <span class="ov-video-status">Click to play</span>
+        </div>
+        <div class="ov-video-help"><span>16:9 · 1920 × 1080</span><span>Scroll pauses video</span></div>
+      </div>
+      <div class="ov-col-desc">
+        <div class="ov-section-label rev"><div class="eyebrow">Overview</div></div>
+        <h2 class="ov-desc-heading rev">한식 레스토랑 '오늘'</h2>
+        <p class="ov-desc-body rev">한식 레스토랑 ‘오늘’의 홈페이지를 리디자인한 프로젝트로, 주어진 레이아웃 안에서 브랜드 정체성과 정보 전달력을 강화하는 데 집중했습니다.
+
+기존 페이지는 한식의 정통성을 강조하는 브랜드 메시지에 비해 비주얼에서 한식의 분위기가 충분히 느껴지지 않았고, 메뉴 영역 역시 음식과 주요 정보가 잘 드러나지 않았습니다. 이에 홈페이지에서 전달해야 할 핵심 콘텐츠를 중심으로 정보의 우선순위를 정리하고, 전통성과 현대적인 고급스러움이 함께 느껴지는 방향으로 비주얼을 재구성했습니다.</p>
+      </div>
+      <div class="ov-detail-list">
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/3-11.png" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">01</div><h3 class="ov-detail-title">Brand Identity & Menu</h3><p class="ov-detail-desc">브랜드 가치를 소개하는 영역에는 한국적인 도자 식기에 담긴 음식 이미지를 활용해 ‘한식의 정통성을 오늘만의 방식으로 재해석한다’는 메시지와 비주얼의 일관성을 높였습니다. 기존의 셰프 소개 등 부가적인 콘텐츠는 덜어내고, 브랜드 가치와 메뉴처럼 홈페이지에서 우선적으로 전달해야 할 정보에 집중했습니다.
+
+Luncheon, Dinner, Banquet / Party를 화면 중심에 배치해 메뉴 구성을 한눈에 살펴볼 수 있도록 했습니다. 음식과 메뉴 정보를 함께 보여주고, 어두운 배경과의 대비를 통해 요리가 돋보이도록 구성했습니다.</p></div></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECT 06 ═══ -->
+<section class="proj-overview" id="p06-ov">
+  <div class="ov-head">
+    <div class="ov-kicker rev"><span>Article 06</span><span>Project Overview / 2025—2026</span></div>
+    <div class="ov-title-marquee rev" aria-label="MIHAK — Brand Web Design"><div class="ov-title-track"><h2 class="ov-project-title">ROUTEY</h2><h2 class="ov-project-title" aria-hidden="true">PLAN · EXPLORE · TRAVEL — PLAN · EXPLORE · TRAVEL</h2></div></div>
+  </div>
+  <div class="ov-layout">
+    <div class="ov-col-num">
+      <div class="ov-big-num rev-num">06</div>
+      <div class="ov-meta-block">
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Role</div><div class="ov-meta-val">앱 서비스 기획<br />UI/UX Design<br />App Implementation</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Tools</div><div class="ov-meta-val">Figma<br />Photoshop<br />Replit Agent/AI 활용<br />ChatGPT 웹 구현 보조</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Duration</div><div class="ov-meta-val">2025 · 1 month</div></div>
+        <div class="ov-meta-row rev"><div class="ov-meta-key">Team Project</div><div class="ov-meta-val">App ROUTEY<br />· 4 Members · 일정계획, 관리</div></div>
+      </div>
+</div>
+  <div class="ov-content">
+      <div>
+        <div class="ov-main-video rev-s" tabindex="0" role="button" aria-label="Exhibition — Spatial Design 영상 재생 또는 일시정지">
+          <video muted playsinline preload="metadata">
+            <source src="./videos/project-6.mp4" type="video/mp4">
+          </video>
+          <span class="ov-video-view"><span class="ov-video-view-text">View</span></span>
+          <span class="ov-video-status">Click to play</span>
+        </div>
+        <div class="ov-video-help"><span>모바일</span><span>Scroll pauses video</span></div>
+      </div>
+    <div class="ov-content">
+      <div class="ov-col-desc">
+        <div class="ov-section-label rev"><div class="eyebrow">Overview</div></div>
+        <h2 class="ov-desc-heading rev">ROUTEY — AI가 만드는 나만의 코스</h2>
+        <p class="ov-desc-body rev">국내 당일치기와 단기 여행을 위한 여행 코스 추천 및 일정 관리 앱을 기획·디자인하고, Replit을 활용해 실제 서비스 형태로 구현한 팀 프로젝트입니다. 여행지와 동행인, 날짜를 바탕으로 추천 코스를 확인하고 이동 순서와 시간을 관리할 수 있도록 구성했습니다. 홈에서는 취향에 맞는 활동과 주변 장소를 탐색하고, 커뮤니티와 AI 챗봇을 통해 여행 정보를 확장할 수 있도록 설계했습니다.</p>
+      </div>
+      <div class="ov-detail-list">
+        <article class="ov-detail-card rev-s"><div class="ov-detail-img"><img src="./images/7-1.png" alt="" /></div><div class="ov-detail-body"><div class="ov-detail-num">01</div><h3 class="ov-detail-title">My Part - Schedule Planning Flow</h3><p class="ov-detail-desc">일정 만들기 → 일정 구성 → 일정 관리로 이어지는 여행 일정 플로우를 담당했습니다. 여러 조건을 한 화면에 입력하기보다 단계별로 나누어, 사용자가 여행 조건을 설정하고 완성된 일정을 확인·수정하는 과정이 자연스럽게 이어지도록 구성했습니다.</p></div></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-noise"></div>
+  <div class="about-grid">
+    <div>
+      <div class="about-eyebrow rev">About</div>
+      <h2 class="about-heading rev">해석 · 구조 · 흐름</h2>
+      <p class="about-body rev">맥락을 이해하고 정보를 구조화해, 시각과 경험이 자연스럽게 이어지는 흐름을 만듭니다.</p>
+      <p class="about-body rev">I interpret context and structure information, creating a seamless flow between visual design and experience.</p>
+    </div>
+    <div>
+      <div class="services-list about-info-list rev">
+
+        <div class="about-info-group">
+          <div class="about-info-title">Education</div>
+          <div class="about-info-lines">
+            <div class="about-info-line">그린컴퓨터아카데미 UIUX 웹디자인&퍼블리셔 과정 수료 (2025.09~2026.02)</div>
+            <div class="about-info-line">MBC아카데미컴퓨터 Photoshop/Illustrator 과정 수료 (2025.08~2025.09)</div>
+            <div class="about-info-line">단국대학교 (천안) 일본어전공 (2025.02)</div>
+          </div>
+        </div>
+
+        <div class="about-info-group">
+          <div class="about-info-title">Experience</div>
+          <div class="about-info-lines">
+            <div class="about-info-line">I CAN NOTE Website Project (Team)(현재 적용 전 단계)</div>
+            <div class="about-info-line">Replit 기반 앱 인터페이스 구현 및 구조 설계 (Team)
+
+</div>
+          </div>
+        </div>
+
+        <div class="about-info-group">
+          <div class="about-info-title">Skills</div>
+          <div class="about-info-lines">
+            <div class="about-info-line">Photoshop, Illustrator, Figma, HTML / CSS (basic interaction)</div>
+            <div class="about-info-line">Ai Tools (Midjourney, Firefly, ChatGPT, Runway, Claude, Replit, Framer)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer> 
+  <div>
+    <div class="ft-logo"></div>
+    <div class="ft-sub"></div>
+  </div> 
+
+  <div class="ft-links">
+    <a href="#"></a>
+    <a href="#"></a>
+    <a href="#"></a>
+    <a href="#"></a>
+  </div> 
+
+  <div class="ft-right"> 
+    <a href="mailto:yl236@naver.com" class="ft-email">yl236@naver.com</a> 
+    <div class="ft-copy">© 2026 — All rights reserved</div> 
+  </div> 
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* Loader removed */
+startAnimations();
+
+/* First screen appears immediately with a short, soft fade */
+const revealPage = () => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.body.classList.remove('page-enter');
+      document.body.classList.add('page-enter-complete');
+    });
+  });
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', revealPage, { once:true });
+} else {
+  revealPage();
+}
+
+/* ── OVERVIEW VIDEO ── */
+document.querySelectorAll('.ov-main-video').forEach(shell => {
+  const video = shell.querySelector('video');
+  const status = shell.querySelector('.ov-video-status');
+  if (!video) return;
+
+  const syncState = () => {
+    const playing = !video.paused && !video.ended;
+    shell.classList.toggle('is-playing', playing);
+    if (status) status.textContent = playing ? 'Playing · click to pause' : 'Click to play';
+  };
+
+  const toggleVideo = async () => {
+    try {
+      if (video.paused) await video.play();
+      else video.pause();
+      syncState();
+    } catch (error) {
+      if (status) status.textContent = 'Add project MP4';
+    }
+  };
+
+  shell.addEventListener('click', toggleVideo);
+  shell.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleVideo();
+    }
+  });
+
+  video.addEventListener('play', syncState);
+  video.addEventListener('pause', syncState);
+  video.addEventListener('ended', syncState);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting && !video.paused) {
+        video.pause();
+        syncState();
+      }
+    });
+  }, { threshold: 0.35 });
+
+  observer.observe(shell);
+});
+
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('video').forEach(video => {
+    if (!video.paused) video.pause();
+  });
+}, { passive:true });
+
+
+/* ── COVER FOCUS SLIDESHOW — 1s autoplay + hover focus ── */
+(function initCoverFocusSlideshow(){
+  const viewer = document.querySelector('.cover-focus-viewer--orbit');
+  if (!viewer) return;
+
+  const slides = Array.from(viewer.querySelectorAll('.focus-slide'));
+  const currentLabel = viewer.querySelector('.focus-index-current');
+
+  if (slides.length < 2) return;
+
+  let current = 0;
+  let locked = false;
+  let timer = null;
+  let isVisible = true;
+
+  const showSlide = nextIndex => {
+    if (locked || nextIndex === current) return;
+
+    locked = true;
+
+    const previous = slides[current];
+    const next = slides[nextIndex];
+
+    previous.classList.remove('is-active');
+    previous.classList.add('is-leaving');
+
+    next.classList.remove('is-leaving');
+    next.classList.add('is-active');
+
+    current = nextIndex;
+
+    if (currentLabel) {
+      currentLabel.textContent =
+        String(current + 1).padStart(2,'0');
+    }
+
+    window.setTimeout(() => {
+      previous.classList.remove('is-leaving');
+      locked = false;
+    }, 560);
+  };
+
+  const nextSlide = () => {
+    showSlide((current + 1) % slides.length);
+  };
+
+  /* 1 second automatic slide change */
+  const startAuto = () => {
+    if (
+      timer ||
+      !isVisible ||
+      document.hidden ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return;
+
+    timer = window.setInterval(nextSlide, 1500);
+  };
+
+  const stopAuto = () => {
+    if (!timer) return;
+    window.clearInterval(timer);
+    timer = null;
+  };
+
+  /* Manual click / keyboard control remains available */
+  viewer.addEventListener('click', nextSlide);
+
+  viewer.addEventListener('keydown', event => {
+    if (
+      event.key === 'Enter' ||
+      event.key === ' ' ||
+      event.key === 'ArrowRight'
+    ) {
+      event.preventDefault();
+      nextSlide();
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      showSlide((current - 1 + slides.length) % slides.length);
+    }
+  });
+
+  /* Stop wasting timers when the cover is off-screen */
+  const observer = new IntersectionObserver(entries => {
+    isVisible = entries.some(entry => entry.isIntersecting);
+
+    if (isVisible) startAuto();
+    else stopAuto();
+  }, { threshold:.15 });
+
+  observer.observe(viewer);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAuto();
+    else startAuto();
+  });
+
+  startAuto();
+})();
+
+
+/* ── HERO KEYWORDS — RANDOM SINGLE ACTIVE WORD ── */
+(function initRandomHeroKeyword(){
+  const words = Array.from(
+    document.querySelectorAll('.hero-keywords .orbit-word')
+  );
+
+  const intro = document.querySelector('#intro');
+
+  if (!words.length || !intro) return;
+
+  let current = 0;
+  let timer = null;
+  let visible = true;
+
+  const activate = index => {
+    words.forEach((word, i) => {
+      word.classList.toggle('is-active', i === index);
+    });
+    current = index;
+  };
+
+  const pickNext = () => {
+    let next = current;
+
+    while (next === current && words.length > 1) {
+      next = Math.floor(Math.random() * words.length);
+    }
+
+    activate(next);
+  };
+
+  activate(Math.floor(Math.random() * words.length));
+
+  const start = () => {
+    if (
+      timer ||
+      !visible ||
+      document.hidden ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return;
+
+    timer = window.setInterval(pickNext, 3200);
+  };
+
+  const stop = () => {
+    if (!timer) return;
+    window.clearInterval(timer);
+    timer = null;
+  };
+
+  const observer = new IntersectionObserver(entries => {
+    visible = entries.some(entry => entry.isIntersecting);
+    if (visible) start();
+    else stop();
+  }, {threshold:.15});
+
+  observer.observe(intro);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else start();
+  });
+
+  start();
+})();
+
+
+/* ── HERO KEYWORDS — POP IN / OUT ── */
+(function initKeywordPopField(){
+  const words = Array.from(
+    document.querySelectorAll('.hero-keywords .orbit-word')
+  );
+  const intro = document.querySelector('#intro');
+
+  if (!words.length || !intro) return;
+
+  const reduceMotion =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion) {
+    words.forEach(word => word.classList.add('is-pop-visible'));
+    return;
+  }
+
+  let visible = true;
+  const timers = [];
+
+  /* Each word has a different rhythm so they never look synchronized. */
+  const configs = [
+    { first: 180,  duration: 3600, gapMin: 700,  gapMax: 1700 },
+    { first: 900,  duration: 4100, gapMin: 900,  gapMax: 1900 },
+    { first: 1550, duration: 3300, gapMin: 650,  gapMax: 1500 },
+    { first: 2350, duration: 3900, gapMin: 850,  gapMax: 1800 },
+    { first: 3100, duration: 4400, gapMin: 1000, gapMax: 2100 }
+  ];
+
+  const randomBetween = (min, max) =>
+    Math.round(min + Math.random() * (max - min));
+
+  const runWord = (word, config) => {
+    if (!visible || document.hidden) {
+      const wait = window.setTimeout(() => runWord(word, config), 700);
+      timers.push(wait);
+      return;
+    }
+
+    /* restart CSS animation */
+    word.classList.remove('is-pop-visible');
+    void word.offsetWidth;
+    word.style.setProperty('--pop-duration', `${config.duration}ms`);
+    word.classList.add('is-pop-visible');
+
+    const nextDelay =
+      config.duration + randomBetween(config.gapMin, config.gapMax);
+
+    const timer = window.setTimeout(() => runWord(word, config), nextDelay);
+    timers.push(timer);
+  };
+
+  words.forEach((word, index) => {
+    const config = configs[index % configs.length];
+    const timer = window.setTimeout(
+      () => runWord(word, config),
+      config.first
+    );
+    timers.push(timer);
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    visible = entries.some(entry => entry.isIntersecting);
+    if (!visible) {
+      words.forEach(word => word.classList.remove('is-pop-visible'));
+    }
+  }, { threshold:.12 });
+
+  observer.observe(intro);
+})();
+
+
+/* ── ANIMATIONS ── */
+function startAnimations() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const introTl = gsap.timeline({
+    scrollTrigger:{
+      trigger:'#intro',
+      start:'top top',
+      end:'bottom bottom',
+      scrub:1.15,
+      invalidateOnRefresh:true
+    }
+  });
+
+  /* The sticky intro stage keeps the cover copy and slideshow fixed.
+     No fade, movement or scale animation is applied while scrolling. */
+  introTl.set([
+    '.hero-orbit',
+    '.cover-focus-viewer--orbit',
+    '.orbit-hero-meta',
+    '.orbit-scroll-link'
+  ], {
+    opacity:1,
+    y:0,
+    scale:1,
+    filter:'blur(0px)'
+  }, 0);
+
+document.querySelectorAll('.proj-hero .rev, .proj-overview .rev, #work-index .rev, #about .rev, footer .rev').forEach(el => {
+    gsap.to(el, { opacity:1, y:0, filter:'blur(0px)', duration:0.85, ease:'power3.out', scrollTrigger: { trigger:el, start:'top 88%', once:true } });
+  });
+
+  document.querySelectorAll('.proj-overview').forEach(ov => {
+    ov.querySelectorAll('.rev-s').forEach((el, i) => {
+      gsap.to(el, { opacity:1, y:0, filter:'blur(0px)', duration:0.9, ease:'power3.out', delay: i * 0.08, scrollTrigger: { trigger:el, start:'top 88%', once:true } });
+    });
+  });
+
+  document.querySelectorAll('.rev-num').forEach(el => {
+    gsap.to(el, { opacity:1, y:0, duration:1.1, ease:'power4.out', scrollTrigger: { trigger:el, start:'top 85%', once:true } });
+  });
+
+
+  document.querySelectorAll('.proj-overview').forEach(ov => {
+    gsap.fromTo(ov, { opacity:0.75 }, { opacity:1, ease:'power2.out', scrollTrigger: { trigger:ov, start:'top 80%', end:'top 20%', scrub:0.4 } });
+  });
+
+  document.querySelectorAll('.ov-big-num').forEach(num => {
+    gsap.to(num, { y:'-40px', ease:'none', scrollTrigger: { trigger: num.closest('.proj-overview'), start:'top bottom', end:'bottom top', scrub:true } });
+  });
+
+
+  document.querySelectorAll('#work-index .wi-row').forEach((row, i) => {
+    gsap.to(row, { opacity:1, y:0, filter:'blur(0px)', duration:0.7, ease:'power3.out', delay: i * 0.06, scrollTrigger: { trigger:'#work-index', start:'top 75%', once:true } });
+  });
+
+  gsap.to('.svc', { opacity:1, y:0, filter:'blur(0px)', duration:0.6, ease:'power3.out', stagger:0.07, scrollTrigger: { trigger:'#about', start:'top 65%', once:true } });
+
+  /* Image-led project details: image first, caption follows. */
+  document.querySelectorAll('.ov-detail-card').forEach((card) => {
+    const image = card.querySelector('.ov-detail-img');
+    const body = card.querySelector('.ov-detail-body');
+
+    if (image) {
+      gsap.fromTo(image,
+        { scale:1.035, y:34, opacity:.2, filter:'blur(7px)', clipPath:'inset(10% 0 0 0 round 14px)' },
+        {
+          scale:1, y:0, opacity:1, filter:'blur(0px)', clipPath:'inset(0% 0 0 0 round 14px)',
+          ease:'none',
+          scrollTrigger:{ trigger:card, start:'top 91%', end:'top 43%', scrub:.75, invalidateOnRefresh:true }
+        }
+      );
+    }
+
+    if (body) {
+      gsap.fromTo(body,
+        { y:24, opacity:0, filter:'blur(4px)' },
+        {
+          y:0, opacity:1, filter:'blur(0px)', duration:.75, ease:'power3.out',
+          scrollTrigger:{ trigger:body, start:'top 91%', once:true }
+        }
+      );
+    }
+  });
+
+  /* On desktop, metadata clears and the image column settles toward center. */
+  gsap.matchMedia().add('(min-width: 961px)', () => {
+    document.querySelectorAll('.proj-overview').forEach(section => {
+      const details = section.querySelector('.ov-detail-list');
+      const meta = section.querySelector('.ov-meta-block');
+      const number = section.querySelector('.ov-big-num');
+      const content = section.querySelector('.ov-content');
+      if (!details || !content) return;
+
+      if (meta) {
+        gsap.to(meta, {
+          autoAlpha:0, y:-28, ease:'none',
+          scrollTrigger:{ trigger:details, start:'top 84%', end:'top 48%', scrub:.65, invalidateOnRefresh:true }
+        });
+      }
+
+      if (number) {
+        const isProjectOne = section.id === 'p01-ov';
+        gsap.to(number, {
+          opacity:isProjectOne ? 0 : .15,
+          y:isProjectOne ? -54 : -28,
+          filter:isProjectOne ? 'blur(10px)' : 'blur(7px)',
+          ease:'none',
+          scrollTrigger:{ trigger:details, start:'top 84%', end:'top 48%', scrub:.65, invalidateOnRefresh:true }
+        });
+      }
+
+      gsap.to(content, {
+        x:() => {
+          const rect=content.getBoundingClientRect();
+          return (window.innerWidth/2) - (rect.left + rect.width/2);
+        },
+        ease:'none',
+        scrollTrigger:{ trigger:details, start:'top 92%', end:'top 54%', scrub:.8, invalidateOnRefresh:true }
+      });
+    });
+  });
+}
+
+
+/* Keep ScrollTrigger measurements stable after media and viewport changes. */
+window.addEventListener('load', () => ScrollTrigger.refresh());
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(() => ScrollTrigger.refresh(), 180);
+}, { passive:true });
+
+/* ── SMOOTH ANCHOR SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior:'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>
